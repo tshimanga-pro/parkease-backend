@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style2.css" />
+    <link rel="stylesheet" href="reports.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="admin-header__brand">
+        <div class="admin-header__titles">
+          <h1 class="admin-header__title">ParkEase</h1>
+          <p class="admin-header__subtitle">DAILY REPORTS</p>
+        </div>
+      </div>
+              <div class="nav-right">
+          <!-- <span class="user-role">Admin</span> -->
+          <a href="homepage.html" class="logout-btn">Logout</a>
+        </div>
+      <div class="admin-header__actions">
+        <button class="btn btn-primary" id="downloadPdfBtn" type="button">
+          Download PDF
+        </button>
+        <button class="btn btn-secondary" id="exportCsvBtn" type="button">
+          Export CSV
+        </button>
+      </div>
+    </header>
+
+    <section class="revenue-overview">
+      <div class="revenue-overview__top">
+        <div class="date-selector">
+          <button
+            class="date-selector__btn"
+            id="prevDay"
+            type="button"
+            aria-label="Previous day"
+          >
+            ◀
+          </button>
+          <span class="date-selector__label">Mar 08, 2026</span>
+          <button
+            class="date-selector__btn"
+            id="nextDay"
+            type="button"
+            aria-label="Next day"
+          >
+            ▶
+          </button>
+        </div>
+      </div>
+
+      <div class="metric-cards">
+        <article class="metric-card">
+          <div class="metric-card__header">
+            <h3 class="metric-card__title">Parking Revenue</h3>
+          </div>
+          <div class="metric-card__value" id="parkingValue">UGX 6,240</div>
+          <div class="metric-card__delta delta-positive" id="parkingDelta">
+            ▲ 4.3% vs yesterday
+          </div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-card__header">
+            <h3 class="metric-card__title">Tyre Clinic</h3>
+          </div>
+          <div class="metric-card__value" id="tyreValue">UGX 1,320</div>
+          <div class="metric-card__delta delta-negative" id="tyreDelta">
+            ▼ 1.2% vs yesterday
+          </div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-card__header">
+            <h3 class="metric-card__title">Battery Hire</h3>
+          </div>
+          <div class="metric-card__value" id="batteryValue">UGX 950</div>
+          <div class="metric-card__delta delta-positive" id="batteryDelta">
+            ▲ 2.9% vs yesterday
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="signout-vehicles">
+      <header class="signout-vehicles__header">
+        <h2 class="signout-vehicles__title">Signed-Out Vehicles</h2>
+        <p class="signout-vehicles__subtitle">
+          Recent exit records with duration and fee details
+        </p>
+      </header>
+
+      <div class="signout-vehicles__table-wrap">
+        <table class="signout-vehicles__table">
+          <thead>
+            <tr>
+              <th>Receipt #</th>
+              <th>Number Plate</th>
+              <th>In Time</th>
+              <th>Out Time</th>
+              <th>Duration</th>
+              <th>Fee (UGX)</th>
+            </tr>
+          </thead>
+          <tbody id="signoutRows">
+            <tr>
+              <td colspan="6" style="text-align: center; opacity: 0.65">
+                Loading sign-out entries...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <script>
+      const dateLabel = document.querySelector(".date-selector__label");
+      const prevDayBtn = document.getElementById("prevDay");
+      const nextDayBtn = document.getElementById("nextDay");
+
+      const metricElements = {
+        parking: {
+          value: document.getElementById("parkingValue"),
+          delta: document.getElementById("parkingDelta"),
+        },
+        tyre: {
+          value: document.getElementById("tyreValue"),
+          delta: document.getElementById("tyreDelta"),
+        },
+        battery: {
+          value: document.getElementById("batteryValue"),
+          delta: document.getElementById("batteryDelta"),
+        },
+      };
+
+      const baseValues = {
+        parking: 6240,
+        tyre: 1320,
+        battery: 950,
+      };
+
+      let currentDate = new Date();
+
+      function formatDateLabel(date) {
+        return date.toLocaleDateString(undefined, {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        });
+      }
+
+      function formatDateKey(date) {
+        return date.toISOString().slice(0, 10);
+      }
+
+      async function fetchReportData(date) {
+        const url = `/api/reports?date=${formatDateKey(date)}`;
+
+        try {
+          const resp = await fetch(url, { cache: "no-store" });
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          return await resp.json();
+        } catch (err) {
+          // Fallback to local mock data if no API is available.
+          return null;
+        }
+      }
+
+      function seedFromDate(date) {
+        return (
+          date.getFullYear() * 10000 +
+          (date.getMonth() + 1) * 100 +
+          date.getDate()
+        );
+      }
+
+      function randomFromSeed(seed) {
+        let x = (seed * 9301 + 49297) % 233280;
+        return x / 233280;
+      }
+
+      function formatCurrency(value) {
+        return value.toLocaleString(undefined, {
+          style: "currency",
+          currency: "UGX",
+          maximumFractionDigits: 0,
+        });
+      }
+
+      function generateMockMetrics(date) {
+        const seed = seedFromDate(date);
+        const metrics = {};
+
+        Object.entries(baseValues).forEach(([key, base]) => {
+          const raw = base * (0.85 + randomFromSeed(seed + key.length) * 0.3);
+          const value = Math.round(raw / 10) * 10;
+
+          const prevRaw =
+            base * (0.85 + randomFromSeed(seed + key.length + 67) * 0.3);
+          const prevValue = Math.round(prevRaw / 10) * 10;
+          const deltaPct =
+            prevValue === 0 ? 0 : ((value - prevValue) / prevValue) * 100;
+
+          metrics[key] = {
+            value,
+            deltaPct,
+          };
+        });
+
+        return metrics;
+      }
+
+      async function updateMetrics(date) {
+        const data = (await fetchReportData(date)) || {
+          metrics: generateMockMetrics(date),
+        };
+        const metrics = data.metrics;
+
+        Object.entries(metrics).forEach(([key, { value, deltaPct }]) => {
+          const valueEl = metricElements[key]?.value;
+          const deltaEl = metricElements[key]?.delta;
+
+          if (!valueEl || !deltaEl) return;
+
+          valueEl.textContent = formatCurrency(value);
+          deltaEl.textContent = `${deltaPct >= 0 ? "▲" : "▼"} ${Math.abs(deltaPct).toFixed(1)}% vs yesterday`;
+          deltaEl.classList.toggle("delta-positive", deltaPct >= 0);
+          deltaEl.classList.toggle("delta-negative", deltaPct < 0);
+        });
+      }
+
+      async function fetchSignoutData(date) {
+        const url = `/api/signouts?date=${formatDateKey(date)}`;
+
+        try {
+          const resp = await fetch(url, { cache: "no-store" });
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          return await resp.json();
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function generateMockSignouts(date) {
+        const seed = seedFromDate(date);
+        const rand = (offset) =>
+          Math.floor(30 + randomFromSeed(seed + offset) * 120);
+
+        return Array.from({ length: 4 }, (_, idx) => {
+          const minutes = rand(idx * 3);
+          const inTime = new Date(date);
+          inTime.setHours(7 + idx, 10 + (minutes % 30));
+
+          const durationMin = 60 + rand(idx * 5);
+          const outTime = new Date(inTime);
+          outTime.setMinutes(outTime.getMinutes() + durationMin);
+
+          const hours = Math.floor(durationMin / 60);
+          const mins = durationMin % 60;
+          const durationLabel = `${hours}h ${mins}m`;
+
+          const fee = 2500 + rand(idx * 7);
+
+          return {
+            receipt: `R-${19000 + idx}`,
+            plate: `U${["BR", "AP", "CX", "DG"][idx]} ${100 + idx}K`,
+            inTime: inTime.toLocaleTimeString(undefined, {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            outTime: outTime.toLocaleTimeString(undefined, {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            duration: durationLabel,
+            fee,
+          };
+        });
+      }
+
+      function renderSignouts(rows) {
+        const tbody = document.getElementById("signoutRows");
+        if (!tbody) return;
+
+        if (!rows || rows.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align:center; opacity: 0.65;">
+                No sign-out data available for this date.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = rows
+          .map(
+            (row) => `
+            <tr>
+              <td>${row.receipt}</td>
+              <td>${row.plate}</td>
+              <td>${row.inTime}</td>
+              <td>${row.outTime}</td>
+              <td>${row.duration}</td>
+              <td>${formatCurrency(row.fee)}</td>
+            </tr>
+          `,
+          )
+          .join("");
+      }
+
+      async function updateSignouts(date) {
+        const data = (await fetchSignoutData(date)) || {
+          signouts: generateMockSignouts(date),
+        };
+        renderSignouts(data.signouts);
+      }
+
+      async function adjustDate(days) {
+        currentDate.setDate(currentDate.getDate() + days);
+        dateLabel.textContent = formatDateLabel(currentDate);
+        await Promise.all([
+          updateMetrics(currentDate),
+          updateSignouts(currentDate),
+        ]);
+      }
+
+      prevDayBtn.addEventListener("click", () => adjustDate(-1));
+      nextDayBtn.addEventListener("click", () => adjustDate(1));
+
+      // Initialize
+      (async () => {
+        dateLabel.textContent = formatDateLabel(currentDate);
+        await Promise.all([
+          updateMetrics(currentDate),
+          updateSignouts(currentDate),
+        ]);
+      })();
+    </script>
+  </body>
+</html>

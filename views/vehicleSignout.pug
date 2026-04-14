@@ -1,0 +1,86 @@
+doctype html
+html
+  head
+    title Vehicle Sign Out
+    link(rel="stylesheet" href="style2.css")
+
+  body.signOut-page
+    .nav-set
+      nav.navbar
+        .logo ParkEase
+
+        //- <ul class="nav-links">
+        //-   <li><a href="vehicleRegistration.html">Register Vehicle</a></li>
+        //-   <li><a href="reports.html">Admin</a></li>
+        //-   <li><a href="tyreClinic.html">Tyre Clinic</a></li>
+        //-   <li><a href="batterySection.html">Battery Section</a></li>
+        //-   <li><a href="signout.html" class="signOut-link">Check Out</a></li>
+        //- </ul>
+
+        .nav-right
+          //- <span class="user-role">Admin</span>
+          a.logout-btn(href="vehicleRegistration.html") Logout
+
+      .dashboard
+        .form-section
+          h2 Vehicle Sign Out
+
+          form#signOutForm
+            .search-row
+              label(for="searchQuery") Search Receipt
+              .search-controls
+                input#searchQuery(type="text" placeholder="Receipt ID or Plate Number")
+                button#searchBtn.btn-submit(type="button") Search
+
+            //- <label>Receiver Name</label>
+            //- <input type="text" id="receiverName" required />
+
+            //- <label>Receipt Number</label>
+            //- <input type="text" id="receiptNumber" required pattern="[A-Za-z0-9\-]+" title="Alphanumeric receipt number" />
+
+            label Phone Number
+            input#phoneNumber(type="text" name="phoneNumber" pattern="[0-9]{10}" title="10 digit phone number")
+
+            label Gender
+            select#gender
+              option(value="") --Select--
+              option Male
+              option Female
+
+            label NIN Number
+            input#ninNumber(type="text" pattern="[0-9]{8,10}" title="8–10 digit NIN")
+
+            //- <label>Confirm Payment</label>
+            //- <input type="datetime-local" id="arrivalTime" required />
+
+            button.btn-submit(type="submit") Generate Receipt
+
+        aside.sidebar#sidebar
+          h2 Matched Registration
+          .sidebar-message#sidebarMessage
+            | Search a receipt or plate to see details here.
+          .sidebar-details#sidebarDetails(hidden)
+            .sidebar-row
+              strong Driver:
+              span#sbDriver — 
+            .sidebar-row
+              strong Plate:
+              span#sbPlate — 
+            .sidebar-row
+              strong Vehicle:
+              span#sbVehicle — 
+            .sidebar-row
+              strong Arrival:
+              span#sbArrival — 
+            .sidebar-row
+              strong Duration:
+              span#sbDuration — 
+            .sidebar-row.fee-row
+              strong Fee:
+              span#sbFee — 
+            .sidebar-row.status-row
+              span.status-badge.pending#sbStatus PENDING SIGN-OUT
+
+          button#sbSignOut.btn-submit(type="button" disabled) Confirm Sign-Out
+
+    script(src="signOut.js")

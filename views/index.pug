@@ -1,0 +1,256 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title ParkEase
+    link(rel="stylesheet", href="/css/style2.css")
+    img(src="/images/Parking_Background3.jpg", alt="ParkEase")
+
+    style.
+      /* Custom CSS for ParkEase Homepage */
+
+      /* Hero Section */
+      .hero-section {
+        background: (135deg, #667eea 0%, #764ba2 100%,);
+        color: white;
+        padding: 100px 20px;
+        text-align: center;
+        min-height: 20vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero-content h1 {
+        font-size: 3rem;
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      .hero-content p {
+        font-size: 1.2rem;
+        text-align: center;
+        margin-bottom: 20px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 15px 30px;
+        margin-top: 20px;
+        text-decoration: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background-color: #22c55e;
+        color:#0b1220;
+        border: 2px solid #007bff;
+      }
+
+      .btn-primary:hover {
+        background-color: transparent;
+        color: #007bff;
+        transform: translateY(-5px);
+      }
+
+      .btn-secondary {
+        background-color: transparent;
+        color: #28a745;
+        border: 2px solid #28a745;
+      }
+
+      .btn-secondary:hover {
+        background-color: #007bff;
+        color: white;
+        transform: translateY(-5px);
+      }
+
+      .services-section {
+        padding: 80px 20px;
+        background-color: #f8f9fa;
+        text-align: center;
+      }
+
+      .services-section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 50px;
+        color: #333;
+      }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .service-card {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .service-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .service-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #007bff;
+      }
+
+      .service-card p {
+        color: #666;
+      }
+
+      .about-section {
+        padding: 80px 20px;
+        background-color: white;
+        text-align: center;
+      }
+
+      .about-section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+      .about-section p {
+        font-size: 1.1rem;
+        max-width: 800px;
+        margin: 0 auto;
+        color: #666;
+        line-height: 1.6;
+      }
+
+      .contact-section {
+        padding: 80px 20px;
+        background-color: #0854a0;
+        color: #e2cf21;
+        text-align: center;
+      }
+
+      .contact-section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+      }
+
+      .contact-section p {
+        margin-bottom: 10px;
+      }
+
+      .navbar {
+        background: (135deg, #0245e2 0%, #1e293b 55%, #0245e2 100%);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: 10px 20px;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 20px;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #e2cf21;
+      }
+
+      .logout-btn {
+        margin-left: auto;
+        padding: 10px 20px;
+        background-color: #dc3545;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .logout-btn:hover {
+        background-color: #c82333;
+      }
+
+      @media (max-width: 668px) {
+        .hero-content h1 {
+          font-size: 2rem;
+        }
+        .cta-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+        .services-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+  body.homepage
+    nav.navbar
+      .nav-right
+        .logo ParkEase
+        img(src="/images/Parking_Background3.jpg", alt="parkease image", width="150px")
+
+    main.hero-section
+      .hero-content
+        h1 Welcome to ParkEase
+        p
+        |Your trusted partner for vehicle parking, maintenance, and services.
+        |Experience seamless parking solutions with cutting-edge technology.
+        .cta-buttons
+          a.btn.btn-primary(href="/auth/logIn") Sign In
+          a.btn.btn-secondary(href="/contact") Contact
+
+    section.services-section
+      .container
+        h2 Our Services
+        .services-grid
+          .service-card
+            h3 Parking Space
+            p
+              | Secure and convenient parking solutions for all vehicle types.
+              | 24/7 surveillance and easy access.
+          .service-card
+            h3 Battery Service
+            p
+              | Hire or purchase high-quality batteries for your vehicle.
+              | Professional installation and maintenance.
+          .service-card
+            h3 Tyre Clinic
+            p
+              | Complete tyre services including pressure checks, puncture fixing,
+              | and valve replacements.
+
+    footer#contact.contact-section
+      .container
+        h2 Reach Out
+        p Get in touch with us for any inquiries or support.
+        p Email: info@parkease.com
+        p Phone: +256 123 456 789
+        p Address: Kampala, Uganda
+        p ________________________________________________________________
+        span Copyright © 2026 | Developed by Alpha Digital Services.

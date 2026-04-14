@@ -1,0 +1,22 @@
+extends layout 
+block content      
+    table
+        thead
+            tr
+                th First Name
+                th SurName
+                th Email
+                th Telephone
+                th Role
+        tbody
+            if users.length 
+                each user in users 
+                    tr
+                        td #{user.firstName}
+                        td #{user.surName}
+                        td #{user.email}
+                        td #{user.Telephone}
+                        td #{user.role}
+            else 
+                tr 
+                    td No users found            

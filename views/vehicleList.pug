@@ -1,0 +1,45 @@
+extends layout 
+block content      
+    table
+            thead
+            tr
+                th Image
+                th Driver Name
+                th Phone Number
+                th Vehicle Type
+                th Number Plate
+                th Vehicle Model
+                th Vehicle Color
+                th Arrival Date
+                th Arrival Time
+                th Status
+                if user.role === "Admin"
+                    th Update
+                    th Delete
+            tbody
+                if vehicles.length 
+                    each vehicle in vehicles 
+                        tr
+                            td
+                                img(src = "/" + vehicle.vehicleImage alt = "Vehicle image" width = "150px" height = "170px")
+                            td #{vehicle.driverName}
+                            td #{vehicle.phoneNumber}
+                            td #{vehicle.vehicleType}
+                            td #{vehicle.numberPlate}
+                            td #{vehicle.vehicleModel}
+                            td #{vehicle.vehicleColor}
+                            td #{vehicle.arrivalDate}
+                            td #{vehicle.arrivalTime}
+                            td #{vehicle.status}
+                            if user.role === "Admin"
+                                td 
+                                    a.btn.btn-sm.btn-outline-warning.text-dark(href=`/vehicles/update/${vehicle._id}`)
+                                        i.fa-solid.fa-pen-to-square 
+                                td 
+                                    form(method="post", action="/vehicles/delete")
+                                        input(type="hidden", name="id", value=vehicle._id)
+                                        button.btn.btn-sm.btn-outline-danger.text-dark(type="submit")
+                                            i.fa-solid.fa-trash
+                else 
+                    tr 
+                        td No vehicles found

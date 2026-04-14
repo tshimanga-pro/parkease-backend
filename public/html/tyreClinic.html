@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tyre Clinic</title>
+    <link rel="stylesheet" href="style2.css" />
+</head>
+<body class="register-page">
+    <div class="nav-set">
+        <nav class="navbar">
+            <div class="logo">ParkEase</div>
+            <ul class="nav-links">
+                <li><a href="batterySection.html">Battery Service</a></li>
+            </ul>
+            <div class="nav-right">
+                <a href="managerDashboard.html" class="logout-btn">Logout</a>
+            </div>
+        </nav>
+        <div class="form-card">
+            <h2>Tyre Clinic</h2>
+            <form id="tyreForm">
+                <div class="form-group">
+                    <label for="tyreSize">Tyre Size</label>
+                    <select id="tyreSize" name="tyreSize" required>
+                        <option value="">-- Select Size --</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tyreModel">Tyre Model</label>
+                    <select id="tyreModel" name="tyreModel" required>
+                        <option value="">-- Select Model --</option>
+                        <option value="Basic">Basic</option>
+                        <option value="Standard">Standard</option>
+                        <option value="Premium">Premium</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Services</label>
+                    <div>
+                        <input type="checkbox" id="pressure" name="services" value="pressure">
+                        <label for="pressure">Pressure Check (UGX 500)</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="puncture" name="services" value="puncture">
+                        <label for="puncture">Puncture Fixing (UGX 5000)</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="valves" name="services" value="valves">
+                        <label for="valves">Valves Replacement (UGX 5000)</label>
+                    </div>
+                </div>
+                <button type="button" id="calculateBtn" class="btn">Calculate Charges</button>
+            </form>
+            <div id="result" class="result-section" style="display: none;">
+                <h3>Charge Summary</h3>
+                <p id="tyrePrice">Tyre Price: UGX 0</p>
+                <p id="servicesTotal">Services Total: UGX 0</p>
+                <p id="grandTotal"><strong>Grand Total: UGX 0</strong></p>
+            </div>
+            <div id="activities" class="activities-section">
+                <h3>Activities Overview</h3>
+                <ul id="activityList"></ul>
+            </div>
+            <div id="totals" class="totals-section">
+                <h3>Service Totals</h3>
+                <p id="pressureTotalDisplay">Total Pressure Check: UGX 0</p>
+                <p id="punctureTotalDisplay">Total Puncture Fixing: UGX 0</p>
+                <p id="valvesTotalDisplay">Total Valves Replacement: UGX 0</p>
+                <p id="grandServiceTotal"><strong>Grand Service Total: UGX 0</strong></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        let serviceTotals = {
+            pressure: 0,
+            puncture: 0,
+            valves: 0
+        };
+
+        const tyrePrices = {
+            14: { Basic: 100000, Standard: 150000, Premium: 200000 },
+            15: { Basic: 120000, Standard: 170000, Premium: 220000 },
+            16: { Basic: 140000, Standard: 190000, Premium: 240000 },
+            17: { Basic: 160000, Standard: 210000, Premium: 260000 },
+            18: { Basic: 180000, Standard: 230000, Premium: 280000 }
+        };
+
+        const serviceCharges = {
+            pressure: 500,
+            puncture: 5000,
+            valves: 5000
+        };
+
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const size = document.getElementById('tyreSize').value;
+            const model = document.getElementById('tyreModel').value;
+            const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
+
+            if (!size || !model) {
+                alert('Please select tyre size and model.');
+                return;
+            }
+
+            const tyrePrice = tyrePrices[size][model];
+            let servicesTotal = 0;
+            services.forEach(service => {
+                const charge = serviceCharges[service];
+                servicesTotal += charge;
+                serviceTotals[service] += charge;
+            });
+            const grandTotal = tyrePrice + servicesTotal;
+
+            document.getElementById('tyrePrice').textContent = `Tyre Price: UGX ${tyrePrice.toLocaleString()}`;
+            document.getElementById('servicesTotal').textContent = `Services Total: UGX ${servicesTotal.toLocaleString()}`;
+            document.getElementById('grandTotal').textContent = `Grand Total: UGX ${grandTotal.toLocaleString()}`;
+            document.getElementById('result').style.display = 'block';
+
+            updateServiceTotals();
+
+            // Add to activities
+            const activityList = document.getElementById('activityList');
+            const li = document.createElement('li');
+            li.textContent = `Tyre ${size}" ${model} - Services: ${services.join(', ')} - Total: UGX ${grandTotal.toLocaleString()}`;
+            activityList.appendChild(li);
+        });
+
+        function updateServiceTotals() {
+            const grandTotal = serviceTotals.pressure + serviceTotals.puncture + serviceTotals.valves;
+            document.getElementById('pressureTotalDisplay').textContent = `Total Pressure Check: UGX ${serviceTotals.pressure.toLocaleString()}`;
+            document.getElementById('punctureTotalDisplay').textContent = `Total Puncture Fixing: UGX ${serviceTotals.puncture.toLocaleString()}`;
+            document.getElementById('valvesTotalDisplay').textContent = `Total Valves Replacement: UGX ${serviceTotals.valves.toLocaleString()}`;
+            document.getElementById('grandServiceTotal').textContent = `Grand Service Total: UGX ${grandTotal.toLocaleString()}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - ParkEase</title>
+    <link rel="stylesheet" href="style2.css" />
+  </head>
+
+  <body class="contact-page">
+    <div class="nav-set">
+      <nav class="navbar">
+        <div class="logo">ParkEase</div>
+
+        <ul class="nav-links">
+          <li><a href="homepage.html">Home</a></li>
+          <!-- <li><a href="managerDashboard.html">Dashboard</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li> -->
+        </ul>
+
+        <div class="nav-right">
+          <a href="logIn.html" class="logout-btn">Logout</a>
+        </div>
+      </nav>
+
+      <div class="contact-container">
+        <h1>Contact Form</h1>
+        <p class="contact-intro">
+          Need help or have a question about parking services? Send us a message
+          and our team will respond shortly.
+        </p>
+
+        <div class="contact-grid">
+          <!-- Contact Form -->
+
+          <div class="contact-form">
+            <h3>Send us a Message</h3>
+
+            <form id="contactForm">
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required />
+              </div>
+
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" required />
+              </div>
+
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="10"
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit">Send Message</button>
+            </form>
+          </div>
+
+          <!-- Contact Information -->
+
+          <div class="contact-info">
+            <h3>Contact Information</h3>
+
+            <p>
+              <strong>Address:</strong> ParkEase Service Center, Kampala, Uganda
+            </p>
+
+            <p><strong>Phone:</strong> +256 700 000 000</p>
+
+            <p><strong>Email:</strong> support@parkease.com</p>
+
+            <p><strong>Working Hours:</strong></p>
+            <ul>
+              <li>Monday – Friday: 08:00 – 18:00</li>
+              <li>Saturday: 09:00 – 16:00</li>
+              <li>Sunday: Closed</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

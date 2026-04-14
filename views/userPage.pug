@@ -1,0 +1,51 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title User Page
+    link(rel="stylesheet" href="/css/style2.css")
+  body.register-page
+    .nav-set
+      nav.navbar
+        .logo ParkEase
+        ul.nav-links
+          li
+            a(href="/") Home
+        ul.nav-links
+          li
+            a(href="/admin") Admin Dashboard
+          li
+            a(href="/contact") Contact
+        .nav-right
+          a.logout-btn(href="/auth/logIn") Logout
+      .form-card
+        h2 User Account
+        form#loginForm
+          .form-group
+            label(for="firstName") First Name
+            input(type="text" id="firstName" name="firstName")
+          .form-group
+            label(for="surname") Surname
+            input(type="text" id="surname" name="surname")
+          .form-group
+            label(for="email") Email
+            input(type="email" id="email" name="email")
+          .form-group
+            label(for="password") Password
+            input(type="password" id="password" name="password" minlength="6")
+          .form-group
+            label(for="telephone") Telephone
+            input(type="tel" id="telephone" name="telephone")
+          .form-group
+            label(for="role") Role
+            select(id="role" name="role")
+              option(value="") -- Select Role --
+              option(value="Admin") Admin
+              option(value="Service Manager") Service Manager
+              option(value="Parking Attendant") Parking Attendant
+          button.btn(type="submit") Create User
+          #formMessage.form-message(aria-live="polite")
+    script.
+    script(src="script.js")
+    

@@ -1,0 +1,77 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Contact Us - ParkEase
+    link(rel="stylesheet", href="/css/style2.css")
+
+  body.contact-page
+    .nav-set
+      nav.navbar
+        .logo ParkEase
+
+        ul.nav-links
+          li
+            a(href="/") Home
+          //- li
+          //-   a(href="managerDashboard.html") Dashboard
+          //- li
+          //-   a(href="contact.html", class="active") Contact
+
+        .nav-right
+          a.logout-btn(href="/auth/login") Logout
+
+      .contact-container
+        h1 Contact Form
+        p.contact-intro
+          | Need help or have a question about parking services? Send us a message
+          | and our team will respond shortly.
+
+        .contact-grid
+          //- Contact Form
+          .contact-form
+            h3 Send us a Message
+
+            form#contactForm
+              .form-group
+                label(for="name") Full Name
+                input(type="text", id="name", name="name", required)
+
+              .form-group
+                label(for="email") Email Address
+                input(type="email", id="email", name="email", required)
+
+              .form-group
+                label(for="subject") Subject
+                input(type="text", id="subject", name="subject", required)
+
+              .form-group
+                label(for="message") Message
+                textarea#message(name="message", rows="10", required)
+
+              button.btn-submit(type="submit") Send Message
+
+          //- Contact Information
+          .contact-info
+            h3 Contact Information
+
+            p
+              strong Address:
+              |  ParkEase Service Center, Kampala, Uganda
+
+            p
+              strong Phone:
+              |  +256 700 000 000
+
+            p
+              strong Email:
+              |  support@parkease.com
+
+            p
+              strong Working Hours:
+
+            ul
+              li Monday – Friday: 08:00 – 18:00
+              li Saturday: 09:00 – 16:00
+              li Sunday: Closed

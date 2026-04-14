@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battery Services</title>
+    <link rel="stylesheet" href="style2.css" />
+</head>
+<body class="register-page">
+    <div class="nav-set">
+        <nav class="navbar">
+            <div class="logo">ParkEase</div>
+            <ul class="nav-links">
+                <li><a href="tyreClinic.html">Tyre Clinic</a></li>
+            </ul>
+            <div class="nav-right">
+                <a href="dashboardManeger.html" class="logout-btn">Logout</a>
+            </div>
+        </nav>
+        <div class="form-card">
+            <h2>Battery Hire and Sale Service</h2>
+            <form id="batteryForm">
+                <div class="form-group">
+                    <label for="batteryType">Battery Type</label>
+                    <select id="batteryType" name="batteryType" name="batteryType">
+                        <option value="">-- Select Type --</option>
+                        <option value="12V Car">12V Car Battery</option>
+                        <option value="24V Truck">24V Truck Battery</option>
+                        <option value="12V Motorcycle">12V Motorcycle Battery</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="serviceType">Service Type</label>
+                    <select id="serviceType" name="serviceType" name="serviceType">
+                        <option value="">-- Select Service --</option>
+                        <option value="hire">Hire</option>
+                        <option value="sale">Sale</option>
+                    </select>
+                </div>
+                <div class="form-group" id="daysGroup" style="display: none;">
+                    <label for="days">Number of Days</label>
+                    <input type="number" id="days" name="days" min="1" value="1">
+                </div>
+                <button type="button" id="calculateBtn" class="btn">Calculate Charges</button>
+            </form>
+            <div id="result" class="result-section" style="display: none;">
+                <h3>Charge Summary</h3>
+                <p id="batteryPrice">Battery Price: UGX 0</p>
+                <p id="grandTotal"><strong>Grand Total: UGX 0</strong></p>
+            </div>
+            <div id="activities" class="activities-section">
+                <h3>Activities Overview</h3>
+                <ul id="activityList"></ul>
+            </div>
+            <div id="totals" class="totals-section">
+                <h3>Total Summary</h3>
+                <p id="hireTotalDisplay">Total Hire: UGX 0</p>
+                <p id="saleTotalDisplay">Total Sale: UGX 0</p>
+                <p id="overallTotalDisplay"><strong>Overall Total: UGX 0</strong></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        let hireTotal = 0;
+        let saleTotal = 0;
+
+        const batteryPrices = {
+            hire: {
+                "12V Car": 5000, // per day
+                "24V Truck": 10000,
+                "12V Motorcycle": 3000
+            },
+            sale: {
+                "12V Car": 150000,
+                "24V Truck": 300000,
+                "12V Motorcycle": 50000
+            }
+        };
+
+        document.getElementById('serviceType').addEventListener('change', function() {
+            const serviceType = this.value;
+            const daysGroup = document.getElementById('daysGroup');
+            if (serviceType === 'hire') {
+                daysGroup.style.display = 'block';
+            } else {
+                daysGroup.style.display = 'none';
+            }
+        });
+
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const type = document.getElementById('batteryType').value;
+            const service = document.getElementById('serviceType').value;
+            const days = parseInt(document.getElementById('days').value) || 1;
+
+            if (!type || !service) {
+                alert('Please select battery type and service type.');
+                return;
+            }
+
+            let price = batteryPrices[service][type];
+            if (service === 'hire') {
+                price *= days;
+            }
+
+            document.getElementById('batteryPrice').textContent = `Battery ${service.charAt(0).toUpperCase() + service.slice(1)} Price: UGX ${price.toLocaleString()}`;
+            document.getElementById('grandTotal').textContent = `Grand Total: UGX ${price.toLocaleString()}`;
+            document.getElementById('result').style.display = 'block';
+
+            // Update totals
+            if (service === 'hire') {
+                hireTotal += price;
+            } else {
+                saleTotal += price;
+            }
+            updateTotals();
+
+            // Add to activities
+            const activityList = document.getElementById('activityList');
+            const li = document.createElement('li');
+            li.textContent = `${type} - ${service.charAt(0).toUpperCase() + service.slice(1)} ${service === 'hire' ? `for ${days} day(s)` : ''} - Total: UGX ${price.toLocaleString()}`;
+            activityList.appendChild(li);
+        });
+
+        function updateTotals() {
+            const overallTotal = hireTotal + saleTotal;
+            document.getElementById('hireTotalDisplay').textContent = `Total Hire: UGX ${hireTotal.toLocaleString()}`;
+            document.getElementById('saleTotalDisplay').textContent = `Total Sale: UGX ${saleTotal.toLocaleString()}`;
+            document.getElementById('overallTotalDisplay').textContent = `Overall Total: UGX ${overallTotal.toLocaleString()}`;
+        }
+    </script>
+</body>
+</html>

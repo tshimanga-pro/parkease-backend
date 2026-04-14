@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vehicle Registration</title>
+    <link rel="stylesheet" href="style2.css" />
+    <!-- <link rel="dash" href="dashBoardPage.html" /> -->
+  </head>
+
+  <body class="register-page">
+    <div class="nav-set">
+      <nav class="navbar">
+        <div class="logo">ParkEase</div>
+
+        <ul class="nav-links">
+          <li>
+            <!-- <a href="vehicleRegistration.html" class="register-link">Register Vehicle</a> -->
+          </li>
+
+          <li><a href="contact_form.html">Contact</a></li>
+          <!-- <li><a href="batterySection.html">Battery Section</a></li> -->
+          <!-- <li><a href="tyreClinic.html">Tyre Clinic</a></li>
+          <li><a href="vehicleSignOut.html">Check Out</a></li> -->
+        </ul>
+
+        <div class="nav-right">
+          <span class="user-role">Parking Attendant</span>
+          <a href="dashboard.html" class="logout-btn">Logout</a>
+        </div>
+      </nav>
+      <div class="form-card">
+        <h2>Vehicle Registration</h2>
+
+        <form id="registrationForm" novalidate>
+          <div id="formMessage" class="form-message" aria-live="polite"></div>
+
+          <label for="driverName">Driver Name</label>
+          <input type="text" id="driverName" name="driverName" minlength="2" />
+          <label for="numberPlate">Number Plate</label>
+          <input
+            type="text"
+            id="numberPlate"
+            name="numberPlate"
+            pattern="[A-Za-z0-9\- ]+"
+            title="Alphanumeric characters only"
+          />
+          <label for="vehicleModel">Vehicle Model</label>
+          <input type="text" id="vehicleModel" name="vehicleModel" />
+          <label for="vehicleColor">Vehicle Color</label>
+          <input type="text" id="vehicleColor" name="vehicleColor" />
+          <label for="arrivalTime">Arrival Time</label>
+          <input type="time" id="arrivalTime" name="arrivalTime" />
+          <label for="date">Date</label>
+          <input type="date" id="date" name="date" />
+          <label for="phoneNumber">Phone Number</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            name="phoneNumber"
+            pattern="[0-9]{10}"
+            title="10 digit phone number"
+          />
+          <label for="ninNumber">NIN Number (Required for Boda Bodas)</label>
+          <input
+            type="text"
+            id="ninNumber"
+            name="ninNumber"
+            pattern="[0-9]{8,10}"
+            title="8–10 digit NIN"
+          />
+          <label for="vehicleType">Vehicle Type</label>
+          <select id="vehicleType" name="vehicleType">
+            <option value="">-- Select Vehicle Type --</option>
+            <option value="Truck">Truck</option>
+            <option value="Personal Car">Personal Car</option>
+            <option value="Taxi">Taxi</option>
+            <option value="Coaster">Coaster</option>
+            <option value="Boda Boda">Boda Boda</option>
+          </select>
+
+          <label for="vehicleImage">Vehicle Image</label>
+          <input
+            type="file"
+            id="vehicleImage"
+            name="vehicleImage"
+            accept="image/*"
+            required
+          />
+          <img
+            id="vehicleImagePreview"
+            alt="Vehicle preview"
+            style="display:none; max-width:100%; margin-top:0.75rem; border-radius:8px;"
+          />
+
+          <button type="submit" class="btn-submit">Register Vehicle</button>
+          <button type="button" id="printReceipt" class="btn-submit" disabled>
+            Print Ticket
+          </button>
+        </form>
+
+        <div class="saved-entries">
+          <h3>Saved Registrations</h3>
+          <p class="empty-state">No saved registrations yet.</p>
+          <table class="entries-table" hidden>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Driver</th>
+                <th>Plate</th>
+                <th>Type</th>
+                <th>Phone</th>
+              </tr>
+            </thead>
+            <tbody id="entriesBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

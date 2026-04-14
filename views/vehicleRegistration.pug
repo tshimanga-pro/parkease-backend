@@ -1,0 +1,116 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Vehicle Registration
+    link(rel="stylesheet" href="style2.css")
+    //- link(rel="dash" href="dashBoardPage.html")
+
+  body.register-page
+    .nav-set
+      nav.navbar
+        .logo ParkEase
+
+        ul.nav-links
+          li
+            //- a.register-link(href="vehicleRegistration.html") Register Vehicle
+          li
+            a(href="contact_form.html") Contact
+          //- li
+          //-   a(href="batterySection.html") Battery Section
+          //- li
+          //-   a(href="tyreClinic.html") Tyre Clinic
+          //- li
+          //-   a(href="vehicleSignOut.html") Check Out
+
+        .nav-right
+          span.user-role Parking Attendant
+          a.logout-btn(href="dashboard.html") Logout
+
+      .form-card
+        h2 Vehicle Registration
+
+        form#registrationForm(methode="post" action="/registerVehicle" enctype="multipart/form-data")
+          #formMessage.form-message(aria-live="polite")
+
+          label(for="driverName") Driver Name
+          input(type="text" id="driverName" name="driverName" minlength="2")
+
+          label(for="numberPlate") Number Plate
+          input(
+            type="text"
+            id="numberPlate"
+            name="numberPlate"
+            pattern="[A-Za-z0-9\- ]+"
+            title="Alphanumeric characters only"
+          )
+
+          label(for="vehicleModel") Vehicle Model
+          input(type="text" id="vehicleModel" name="vehicleModel")
+
+          label(for="vehicleColor") Vehicle Color
+          input(type="text" id="vehicleColor" name="vehicleColor")
+
+          label(for="arrivalTime") Arrival Time
+          input(type="time" id="arrivalTime" name="arrivalTime")
+
+          label(for="date") Date
+          input(type="date" id="date" name="date")
+
+          label(for="phoneNumber") Phone Number
+          input(
+            type="tel"
+            id="phoneNumber"
+            name="phoneNumber"
+            pattern="[0-9]{10}"
+            title="10 digit phone number"
+          )
+
+          label(for="ninNumber") NIN Number (Required for Boda Bodas)
+          input(
+            type="text"
+            id="ninNumber"
+            name="ninNumber"
+            pattern="[0-9]{8,10}"
+            title="8–10 digit NIN"
+          )
+
+          label(for="vehicleType") Vehicle Type
+          select(id="vehicleType" name="vehicleType")
+            option(value="") -- Select Vehicle Type --
+            option(value="Truck") Truck
+            option(value="Personal Car") Personal Car
+            option(value="Taxi") Taxi
+            option(value="Coaster") Coaster
+            option(value="Boda Boda") Boda Boda
+                    label(for="vehicleImage") Vehicle Image
+          input#vehicleImage(
+            type="file",
+            name="vehicleImage",
+            accept="image/*",
+            required
+          )
+
+          img#vehicleImagePreview(
+            alt="Vehicle preview",
+            style="display:none; max-width:100%; margin-top:0.75rem; border-radius:8px;"
+          )
+
+          button.btn-submit(type="submit") Register Vehicle
+          button.btn-submit(type="button" id="printReceipt" disabled) Print Ticket
+
+        .saved-entries
+          h3 Saved Registrations
+          p.empty-state No saved registrations yet.
+          table.entries-table(hidden)
+            thead
+              tr
+                th Date
+                th Driver
+                th Plate
+                th Type
+                th Phone
+            tbody#entriesBody
+
+    script(src="script.js")

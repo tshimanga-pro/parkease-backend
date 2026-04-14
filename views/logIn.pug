@@ -1,0 +1,40 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title User Singin
+    link(rel="stylesheet" href="/css/style2.css")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap")
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato&display=swap")
+  body
+    //- <a href="register.html">Click Me</a>
+    //- <a href="signOut.html">SIGN OUT</a>
+    //- <a href="reports.html">REPORTS</a>
+    .container
+      form.form-card#loginForm(novalidate)
+        h2 Sign In Portal
+
+        #loginMessage.form-message(aria-live="polite")
+
+        .input-group
+          label(for="email") Email address
+          input(type="email" id="email" name="email" placeholder="you@example.com")
+
+        .input-group
+          label(for="password") Password
+          input(type="password" id="password" name="password" minlength="6" placeholder="Enter password")
+
+        button.btn-submit(type="submit") Submit
+
+        .form-footer
+          p Don't have an account? 
+            a(href="/contact") Contact Adm.
+
+        .forgot
+          a(href="#") Forgot Password?
+
+    script(src="signIn.js")
+    

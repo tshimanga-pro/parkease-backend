@@ -1,0 +1,77 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Admin Dashboard
+    link(rel="stylesheet" href="/css/style2.css")
+    link(rel="stylesheet" href="/css/reports.css")
+
+  body
+    header.admin-header
+      .admin-header__brand
+        .admin-header__titles
+          h1.admin-header__title ParkEase
+          p.admin-header__subtitle DAILY REPORTS
+
+      .nav-right
+        //- span.user-role Admin
+        a.logout-btn(href="/") Logout
+
+      .admin-header__actions
+        button#downloadPdfBtn.btn.btn-primary(type="button") Download PDF
+        button#exportCsvBtn.btn.btn-secondary(type="button") Export CSV
+
+    section.revenue-overview
+      .revenue-overview__top
+        .date-selector
+          button#prevDay.date-selector__btn(
+            type="button"
+            aria-label="Previous day"
+          ) ◀
+          span.date-selector__label Mar 08, 2026
+          button#nextDay.date-selector__btn(
+            type="button"
+            aria-label="Next day"
+          ) ▶
+
+      .metric-cards
+        article.metric-card
+          .metric-card__header
+            h3.metric-card__title Parking Revenue
+          #parkingValue.metric-card__value UGX 6,240
+          #parkingDelta.metric-card__delta.delta-positive ▲ 4.3% vs yesterday
+
+        article.metric-card
+          .metric-card__header
+            h3.metric-card__title Tyre Clinic
+          #tyreValue.metric-card__value UGX 1,320
+          #tyreDelta.metric-card__delta.delta-negative ▼ 1.2% vs yesterday
+
+        article.metric-card
+          .metric-card__header
+            h3.metric-card__title Battery Hire
+          #batteryValue.metric-card__value UGX 950
+          #batteryDelta.metric-card__delta.delta-positive ▲ 2.9% vs yesterday
+
+    section.signout-vehicles
+      header.signout-vehicles__header
+        h2.signout-vehicles__title Signed-Out Vehicles
+        p.signout-vehicles__subtitle
+          | Recent exit records with duration and fee details
+
+      .signout-vehicles__table-wrap
+        table.signout-vehicles__table
+          thead
+            tr
+              th Receipt #
+              th Number Plate
+              th In Time
+              th Out Time
+              th Duration
+              th Fee (UGX)
+          tbody#signoutRows
+            tr
+              td(colspan="6" style="text-align: center; opacity: 0.65")
+                | Loading sign-out entries...
+

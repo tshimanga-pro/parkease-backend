@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Vehicle Sign Out</title>
+    <link rel="stylesheet" href="style2.css" />
+  </head>
+
+  <body class="signOut-page">
+    <div class="nav-set">
+      <nav class="navbar">
+        <div class="logo">ParkEase</div>
+
+        <!-- <ul class="nav-links">
+          <li><a href="vehicleRegistration.html">Register Vehicle</a></li> -->
+          <!-- <li><a href="reports.html">Admin</a></li>
+          <li><a href="tyreClinic.html">Tyre Clinic</a></li>
+          <li><a href="batterySection.html">Battery Section</a></li> -->
+          <!-- <li><a href="signout.html" class="signOut-link">Check Out</a></li> -->
+        </ul>
+
+        <div class="nav-right">
+          <!-- <span class="user-role">Admin</span> -->
+          <a href="vehicleRegistration.html" class="logout-btn">Logout</a>
+        </div>
+      </nav>
+
+      <div class="dashboard">
+        <div class="form-section">
+          <h2>Vehicle Sign Out</h2>
+
+          <form id="signOutForm">
+            <div class="search-row">
+              <label for="searchQuery">Search Receipt</label>
+              <div class="search-controls">
+                <input
+                  type="text"
+                  id="searchQuery"
+                  placeholder="Receipt ID or Plate Number"
+                />
+                <button id="searchBtn" class="btn-submit" type="button">
+                  Search
+                </button>
+              </div>
+            </div>
+
+            <!-- <label>Receiver Name</label> -->
+            <!-- <input type="text" id="receiverName" required /> -->
+
+            <!-- <label>Receipt Number</label> -->
+            <!-- <input -->
+            <!-- type="text" -->
+            <!-- id="receiptNumber" -->
+            <!-- required -->
+            <!-- pattern="[A-Za-z0-9\-]+" -->
+            <!-- title="Alphanumeric receipt number" -->
+            <!-- /> -->
+
+            <label>Phone Number</label>
+            <input
+              type="text"
+              id="phoneNumber"
+              name="phoneNumber"
+              pattern="[0-9]{10}"
+              title="10 digit phone number"
+            />
+
+            <label>Gender</label>
+            <select id="gender">
+              <option value="">--Select--</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+
+            <label>NIN Number</label>
+            <input
+              type="text"
+              id="ninNumber"
+              
+              pattern="[0-9]{8,10}"
+              title="8–10 digit NIN"
+            />
+
+            <!-- <label>Confirm Payment</label> -->
+            <!-- <input type="datetime-local" id="arrivalTime" required /> -->
+
+            <button type="submit" class="btn-submit">Generate Receipt</button>
+          </form>
+        </div>
+
+        <aside class="sidebar" id="sidebar">
+          <h2>Matched Registration</h2>
+          <div class="sidebar-message" id="sidebarMessage">
+            Search a receipt or plate to see details here.
+          </div>
+          <div class="sidebar-details" id="sidebarDetails" hidden>
+            <div class="sidebar-row">
+              <strong>Driver:</strong> <span id="sbDriver">—</span>
+            </div>
+            <div class="sidebar-row">
+              <strong>Plate:</strong> <span id="sbPlate">—</span>
+            </div>
+            <div class="sidebar-row">
+              <strong>Vehicle:</strong> <span id="sbVehicle">—</span>
+            </div>
+            <div class="sidebar-row">
+              <strong>Arrival:</strong> <span id="sbArrival">—</span>
+            </div>
+            <div class="sidebar-row">
+              <strong>Duration:</strong> <span id="sbDuration">—</span>
+            </div>
+            <div class="sidebar-row fee-row">
+              <strong>Fee:</strong> <span id="sbFee">—</span>
+            </div>
+            <div class="sidebar-row status-row">
+              <span class="status-badge pending" id="sbStatus"
+                >PENDING SIGN-OUT</span
+              >
+            </div>
+          </div>
+          <button id="sbSignOut" class="btn-submit" type="button" disabled>
+            Confirm Sign-Out
+          </button>
+        </aside>
+      </div>
+    </div>
+
+    <script src="signOut.js"></script>
+  </body>
+</html>

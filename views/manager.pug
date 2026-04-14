@@ -1,0 +1,86 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Manager Dashboard
+    link(rel="stylesheet" href="/css/style2.css")
+  body
+    .dashboard-app
+      // Sidebar
+      aside.dashboard-sidebar
+        .dashboard-sidebar__logo ParkEase
+
+        nav.dashboard-nav
+          a.active(href="homepage.html") Home
+          a(href="#") Contact
+          //- a(href="tyreClinic.html") Tyre Service
+          //- a(href="batteryRegistration.html") Battery Registration
+
+        .dashboard-user
+          .dashboard-user__role Service Manager
+          .dashboard-user__email manager@example.com
+          a.logout-btn(href="homepage.html") Logout
+
+      // Main Content
+      main.dashboard-main
+        header.dashboard-topbar
+          h2 Manager Dashboard
+
+        section.dashboard-content
+          .cards-grid.cards-row
+            .stat-card
+              .stat-card__label Battery Services Today
+              .stat-card__value 12
+
+            .stat-card
+              .stat-card__label Tyre Services Today
+              .stat-card__value 8
+
+            .stat-card
+              .stat-card__label Batteries Registered
+              .stat-card__value 5
+
+          // Quick Actions
+          section.quick-actions
+            h3 Quick Actions
+
+            .quick-actions__buttons
+              button.quick-action-btn(onclick="window.location.href = 'batterySection.html'")
+                | Battery Service
+              button.quick-action-btn(onclick="window.location.href = 'tyreClinic.html'")
+                | Tyre Service
+              button.quick-action-btn(onclick="window.location.href = 'batteryRegistration.html'")
+                | Battery Registration
+
+          // Recent Service Activity
+          section.recent-arrivals
+            h3 Recent Service Activity
+
+            table.arrivals-table
+              thead
+                tr
+                  th Time
+                  th Service
+                  th Item
+                  th Status
+              tbody
+                tr
+                  td 09:15
+                  td Battery Service
+                  td 12V Car Battery
+                  td
+                    span.status-badge.parked Completed
+                tr
+                  td 09:40
+                  td Tyre Service
+                  td Puncture Fix
+                  td
+                    span.status-badge.parked Completed
+                tr
+                  td 10:05
+                  td Battery Registration
+                  td Amaron 12V
+                  td
+                    span.status-badge.parked Registered
+                    

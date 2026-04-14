@@ -1,0 +1,80 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Battery Registration
+    link(rel="stylesheet", href="/css/style2.css")
+
+  body.register-page
+    .nav-set
+      nav.navbar
+        .logo ParkEase
+
+        ul.nav-links
+          li
+            a(href="/tyreService") Tyre Service
+
+        .nav-right
+          a.logout-btn(href="/manager") Logout
+
+      .form-card
+        h2 Battery Registration Form
+
+        form#batteryForm ('method='post' action='/registerBattery' enctype='multipart/form-data')
+          .form-group
+            label(for="batteryType") Battery Type
+            select#batteryType(name="batteryType")
+              option(value="") -- Select Battery Type --
+              option(value="12V Car") 12V Car Battery
+              option(value="24V Truck") 24V Truck Battery
+              option(value="12V Motorcycle") 12V Motorcycle Battery
+
+          .form-group
+            label(for="batteryBrand") Battery Brand
+            select#batteryBrand(name="batteryBrand")
+              option(value="") -- Select Battery Brand --
+              option(value="Amaron") Amaron
+              option(value="Bosch") Bosch
+              option(value="Exide") Exide
+              option(value="Rocket") Rocket
+              option(value="Yuasa") Yuasa
+
+          .form-group
+            label(for="price") Battery Price (UGX)
+            input(
+              type="text"
+              id="price"
+              name="price"
+              placeholder="Enter battery price in UGX"
+            )
+          .form-group
+            label(for="batteryImage") Battery Image
+            input#batteryImage(
+              type="file",
+              name="batteryImage",
+              accept="image/*",
+              required
+            )
+            img#batteryImagePreview.image-preview(
+              alt="Battery preview",
+              style="display:none; max-width:100%; margin-top:0.5rem; border-radius:6px;"
+            )     
+
+          button.btn(type="submit") Register Battery
+          #batteryMessage.form-message(aria-live="polite")
+
+        .saved-entries
+          //
+            h3 Registered Batteries
+
+            table(border="1", width="100%")
+              thead
+                tr
+                  th #
+                  th Battery Type
+                  th Battery Brand
+                  th Price (UGX)
+              tbody#batteryTableBody
+
+      

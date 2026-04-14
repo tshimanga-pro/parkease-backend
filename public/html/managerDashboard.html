@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manager Dashboard</title>
+    <link rel="stylesheet" href="style2.css" />
+  </head>
+
+  <body>
+    <div class="dashboard-app">
+      <!-- Sidebar -->
+      <aside class="dashboard-sidebar">
+        <div class="dashboard-sidebar__logo">ParkEase</div>
+
+        <nav class="dashboard-nav">
+          <a href="homepage.html" class="active">Home</a>
+          <a href="#">Contact</a>
+          <!-- <a href="tyreClinic.html">Tyre Service</a>
+          <a href="batteryRegistration.html">Battery Registration</a> -->
+        </nav>
+
+        <div class="dashboard-user">
+          <div class="dashboard-user__role">Service Manager</div>
+          <div class="dashboard-user__email">manager@example.com</div>
+          <a href="homepage.html" class="logout-btn">Logout</a>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="dashboard-main">
+        <header class="dashboard-topbar">
+          <h2>Manager Dashboard</h2>
+        </header>
+
+        <section class="dashboard-content">
+          <div class="cards-grid cards-row">
+            <div class="stat-card">
+              <div class="stat-card__label">Battery Services Today</div>
+              <div class="stat-card__value">12</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card__label">Tyre Services Today</div>
+              <div class="stat-card__value">8</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card__label">Batteries Registered</div>
+              <div class="stat-card__value">5</div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <section class="quick-actions">
+            <h3>Quick Actions</h3>
+
+            <div class="quick-actions__buttons">
+              <button
+                class="quick-action-btn"
+                onclick="window.location.href = 'batterySection.html'"
+              >
+                Battery Service
+              </button>
+
+              <button
+                class="quick-action-btn"
+                onclick="window.location.href = 'tyreClinic.html'"
+              >
+                Tyre Service
+              </button>
+
+              <button
+                class="quick-action-btn"
+                onclick="window.location.href = 'batteryRegistration.html'"
+              >
+                Battery Registration
+              </button>
+            </div>
+          </section>
+
+          <!-- Recent Service Activity -->
+          <section class="recent-arrivals">
+            <h3>Recent Service Activity</h3>
+
+            <table class="arrivals-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Service</th>
+                  <th>Item</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>09:15</td>
+                  <td>Battery Service</td>
+                  <td>12V Car Battery</td>
+                  <td><span class="status-badge parked">Completed</span></td>
+                </tr>
+
+                <tr>
+                  <td>09:40</td>
+                  <td>Tyre Service</td>
+                  <td>Puncture Fix</td>
+                  <td><span class="status-badge parked">Completed</span></td>
+                </tr>
+
+                <tr>
+                  <td>10:05</td>
+                  <td>Battery Registration</td>
+                  <td>Amaron 12V</td>
+                  <td><span class="status-badge parked">Registered</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Tyre Clinic
+    link(rel="stylesheet" href="/css/style2.css")
+  body.register-page
+    .nav-set
+      nav.navbar
+        .logo ParkEase
+        ul.nav-links
+          li
+            a(href="/registerBattery") Battery Service
+        .nav-right
+          a.logout-btn(href="/manager") Logout
+      .form-card
+        h2 Tyre Clinic
+        form#tyreForm(method="post" action="/tyreService" enctype="multipart/form-data")
+          .form-group
+            label(for="tyreSize") Tyre Size
+            select#tyreSize(name="tyreSize" required)
+              option(value="") -- Select Size --
+              option(value="14") 14
+              option(value="15") 15
+              option(value="16") 16
+              option(value="17") 17
+              option(value="18") 18
+          .form-group
+            label(for="tyreModel") Tyre Model
+            select#tyreModel(name="tyreModel" required)
+              option(value="") -- Select Model --
+              option(value="Basic") Basic
+              option(value="Standard") Standard
+              option(value="Premium") Premium
+          .form-group
+            label Services
+            div
+              input(type="checkbox" id="pressure" name="services" value="pressure")
+              label(for="pressure") Pressure Check (UGX 500)
+            div
+              input(type="checkbox" id="puncture" name="services" value="puncture")
+              label(for="puncture") Puncture Fixing (UGX 5000)
+            div
+              input(type="checkbox" id="valves" name="services" value="valves")
+              label(for="valves") Valves Replacement (UGX 5000)
+          button.btn(type="button" id="calculateBtn") Calculate Charges
+        #result.result-section(style="display: none;")
+          h3 Charge Summary
+          p#tyrePrice Tyre Price: UGX 0
+          p#servicesTotal Services Total: UGX 0
+          p#grandTotal
+            strong Grand Total: UGX 0
+        #activities.activities-section
+          h3 Activities Overview
+          ul#activityList
+        #totals.totals-section
+          h3 Service Totals
+          p#pressureTotalDisplay Total Pressure Check: UGX 0
+          p#punctureTotalDisplay Total Puncture Fixing: UGX 0
+          p#valvesTotalDisplay Total Valves Replacement: UGX 0
+          p#grandServiceTotal
+            strong Grand Service Total: UGX 0
+    script.
+      let serviceTotals = {
+          pressure: 0,
+          puncture: 0,
+          valves: 0
+      };
+
+      const tyrePrices = {
+          14: { Basic: 100000, Standard: 150000, Premium: 200000 },
+          15: { Basic: 120000, Standard: 170000, Premium: 220000 },
+          16: { Basic: 140000, Standard: 190000, Premium: 240000 },
+          17: { Basic: 160000, Standard: 210000, Premium: 260000 },
+          18: { Basic: 180000, Standard: 230000, Premium: 280000 }
+      };
+

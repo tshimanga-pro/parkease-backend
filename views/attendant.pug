@@ -1,0 +1,121 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Attendant Dashboard
+    link(rel="stylesheet" href="/css/style2.css")
+
+  body
+    .dashboard-app
+      aside.dashboard-sidebar
+        .dashboard-sidebar__logo ParkEase
+
+        nav.dashboard-nav
+          a.active(href="homepage.html") Home
+          a(href="vehicleRegistration.html") Register Vehicle
+          a(href="#") Settings
+
+        .dashboard-user
+          .dashboard-user__role Parking Attendant
+          .dashboard-user__email attendant@example.com
+          a.logout-btn(href="logIn.html") Logout
+
+      main.dashboard-main
+        header.dashboard-topbar
+          .dashboard-search
+            span(aria-hidden="true") 🔍
+            input#dashboardSearch(
+              type="search"
+              placeholder="Search vehicles, receipts..."
+            )
+
+          .dashboard-topbar__meta
+            .shift-info
+              span Shift
+              span#shiftTime 08:00 – 16:00
+
+            button.notification#notificationBtn(
+              data-count="3"
+              aria-label="Notifications"
+            ) 🛎️
+
+        section.dashboard-content
+          .cards-grid.cards-row
+            .stat-card
+              .stat-card__label Total Vehicles Parked
+              .stat-card__value#totalVehicles 0
+
+            .stat-card
+              .stat-card__label Today's Total Revenue (UGX)
+              .stat-card__value#totalRevenue UGX 0
+
+            .stat-card.progress-card
+              .stat-card__label Available Parking Slots
+              .progress-card__bar
+                .progress-card__fill#slotFill
+              .progress-card__label
+                span#slotCount 0
+                |  /
+                span#slotTotal 0
+                |  occupied (
+                span#slotPerc 0
+                | %)
+
+          section.quick-actions
+            h3 Quick Actions
+            .quick-actions__buttons
+              button.quick-action-btn(
+                onclick="window.location.href = 'vehicleRegistration.html'"
+              ) Register Arrival
+
+              button.quick-action-btn(
+                onclick="window.location.href = 'vehicleSignOut.html'"
+              ) Vehicle Sign-out
+
+              button.quick-action-btn(
+                onclick="window.print()"
+              ) Print Daily Summary
+
+          section.recent-arrivals
+            h3 Recent Arrivals
+            table.arrivals-table
+              thead
+                tr
+                  th Time
+                  th Plate Number
+                  th Vehicle Type
+                  th Status
+                  th Actions
+              tbody
+                tr
+                  td 08:15
+                  td UAX 123A
+                  td Personal Car
+                  td
+                    span.status-badge.parked Parked
+                  td
+                    button.actions-menu(title="More actions") ⋮
+
+                tr
+                  td 08:22
+                  td UBR 456B
+                  td Boda Boda
+                  td
+                    span.status-badge.signed-out Signed Out
+                  td
+                    button.actions-menu(title="More actions") ⋮
+
+          section#liveFeed
+            h3 Live Activity
+            p.dashboard-help Updates will appear here as vehicles enter or leave.
+            ul.activity-log#activityLog
+
+    script.
+      const state = {
+        totalVehicles: 42,
+        revenue: 1524000,
+        maxSlots: 60,
+        occupied: 42,
+      };
+

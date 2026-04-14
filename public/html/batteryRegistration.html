@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Battery Registration</title>
+    <link rel="stylesheet" href="style2.css" />
+  </head>
+
+  <body class="register-page">
+    <div class="nav-set">
+      <nav class="navbar">
+        <div class="logo">ParkEase</div>
+
+        <ul class="nav-links">
+          <li><a href="tyreClinic.html">Tyre Service</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <a href="managerDashboard.html" class="logout-btn">Logout</a>
+        </div>
+      </nav>
+
+      <div class="form-card">
+        <h2>Battery Registration Form</h2>
+
+        <form id="batteryForm">
+          <div class="form-group">
+            <label for="batteryType">Battery Type</label>
+            <select id="batteryType" name="batteryType">
+              <option value="">-- Select Battery Type --</option>
+              <option value="12V Car">12V Car Battery</option>
+              <option value="24V Truck">24V Truck Battery</option>
+              <option value="12V Motorcycle">12V Motorcycle Battery</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="batteryBrand">Battery Brand</label>
+            <select id="batteryBrand" name="batteryBrand">
+              <option value="">-- Select Battery Brand --</option>
+              <option value="Amaron">Amaron</option>
+              <option value="Bosch">Bosch</option>
+              <option value="Exide">Exide</option>
+              <option value="Rocket">Rocket</option>
+              <option value="Yuasa">Yuasa</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Battery Price (UGX)</label>
+            <input
+              type="text"
+              id="price"
+              name="price"
+              placeholder="Enter battery price in UGX"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="batteryImage">Battery Image</label>
+            <input
+              type="file"
+              id="batteryImage"
+              name="batteryImage"
+              accept="image/*"
+              required
+            />
+            <img id="batteryImagePreview" alt="Battery preview" class="image-preview" style="display:none; max-width:100%; margin-top:0.5rem; border-radius:6px;" />
+          </div>
+
+          <button type="submit" class="btn">Register Battery</button>
+          <div id="batteryMessage" class="form-message" aria-live="polite"></div>
+        </form>
+
+        <div class="saved-entries">
+          <!-- <h3>Registered Batteries</h3>
+
+          <table border="1" width="100%">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Battery Type</th>
+                <th>Battery Brand</th>
+                <th>Price (UGX)</th>
+              </tr>
+            </thead>
+
+            <tbody id="batteryTableBody"></tbody>
+          </table>
+        </div> -->
+      </div>
+    </div>
+    <script>
+      (function () {
+        const form = document.getElementById("batteryForm");
+        const messageEl = document.getElementById("batteryMessage");
+        const batteryImagePreview = document.getElementById("batteryImagePreview");
+        const storageKey = "parkEaseBatteries";
+
+        if (!form || !messageEl || !batteryImagePreview) {
+          return;
+        }
+
+        function showMessage(text, type = "error") {
+          messageEl.textContent = text;
+          messageEl.className = "form-message";
+          messageEl.classList.add(type === "success" ? "success" : "error");
+        }
+
+        function clearMessage() {
+          messageEl.textContent = "";
+          messageEl.className = "form-message";
+        }
+
+        form.batteryImage.addEventListener("change", function () {
+          const selectedFile = this.files[0];
+          if (!selectedFile || !selectedFile.type.startsWith("image/")) {
+            batteryImagePreview.style.display = "none";
+            batteryImagePreview.src = "";
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = function () {
+            batteryImagePreview.src = reader.result;
+            batteryImagePreview.style.display = "block";
+          };
+          reader.readAsDataURL(selectedFile);
+        });
+
+        function getBatteries() {
+          try {
+            const raw = localStorage.getItem(storageKey);
+            return raw ? JSON.parse(raw) : [];
+          } catch (error) {
+            console.warn("Failed to read saved batteries", error);
+            return [];
+          }
+        }
+
+        function saveBatteries(batteries) {
+          localStorage.setItem(storageKey, JSON.stringify(batteries));
+        }
+
+        function readFileAsDataURL(file) {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => reject(reader.error);
+            reader.readAsDataURL(file);
+          });
+        }
+
+        function isValidUgandaShillings(value) {
+          if (!value || typeof value !== "string") {
+            return false;
+          }
+
+          const trimmed = value.trim();
+          const ugxPattern = /^(?:UGX\s*)?([1-9][0-9]*)$/i;
+          const match = trimmed.match(ugxPattern);
+          return Boolean(match);
+        }
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          clearMessage();
+
+          const priceValue = form.price.value;
+          const imageFile = form.batteryImage.files[0];
+
+          if (!isValidUgandaShillings(priceValue)) {
+            showMessage(
+              "Please enter a valid Ugandan Shilling amount only, for example 120000 or UGX 120000.",
+              "error",
+            );
+            return;
+          }
+
+          if (!imageFile) {
+            showMessage("Please select a battery image file before submitting.", "error");
+            return;
+          }
+
+          if (!imageFile.type.startsWith("image/")) {
+            showMessage("Please upload a valid image file for the battery.", "error");
+            return;
+          }
+
+          readFileAsDataURL(imageFile)
+            .then((imageDataUrl) => {
+              const battery = {
+                batteryType: form.batteryType.value,
+                batteryBrand: form.batteryBrand.value,
+                price: priceValue,
+                imageDataUrl,
+                imageName: imageFile.name,
+                createdAt: new Date().toISOString(),
+              };
+
+              const batteries = getBatteries();
+              batteries.push(battery);
+              saveBatteries(batteries);
+
+              showMessage("Battery registered and saved to local storage.", "success");
+              form.reset();
+              batteryImagePreview.style.display = "none";
+            })
+            .catch(() => {
+              showMessage("Unable to read the battery image file. Please try again.", "error");
+            });
+        });
+      })();
+    </script>
+  </body>
+</html>

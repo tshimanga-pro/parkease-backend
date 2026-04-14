@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attendant Dashboard</title>
+    <link rel="stylesheet" href="style2.css" />
+  </head>
+  <body>
+    <div class="dashboard-app">
+      <aside class="dashboard-sidebar">
+        <div class="dashboard-sidebar__logo">ParkEase</div>
+
+        <nav class="dashboard-nav">
+          <a href="homepage.html" class="active">Home</a>
+          <a href="vehicleRegistration.html">Register Vehicle</a>
+          <a href="#">Settings</a>
+        </nav>
+
+        <div class="dashboard-user">
+          <div class="dashboard-user__role">Parking Attendant</div>
+          <div class="dashboard-user__email">attendant@example.com</div>
+          <a href="logIn.html" class="logout-btn">Logout</a>
+        </div>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="dashboard-topbar">
+          <div class="dashboard-search">
+            <span aria-hidden="true">🔍</span>
+            <input
+              id="dashboardSearch"
+              type="search"
+              placeholder="Search vehicles, receipts..."
+            />
+          </div>
+
+          <div class="dashboard-topbar__meta">
+            <div class="shift-info">
+              <span>Shift</span>
+              <span id="shiftTime">08:00 – 16:00</span>
+            </div>
+            <button
+              class="notification"
+              id="notificationBtn"
+              data-count="3"
+              aria-label="Notifications"
+            >
+              🛎️
+            </button>
+          </div>
+        </header>
+
+        <section class="dashboard-content">
+          <div class="cards-grid cards-row">
+            <div class="stat-card">
+              <div class="stat-card__label">Total Vehicles Parked</div>
+              <div class="stat-card__value" id="totalVehicles">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Today's Total Revenue (UGX)</div>
+              <div class="stat-card__value" id="totalRevenue">UGX 0</div>
+            </div>
+            <div class="stat-card progress-card">
+              <div class="stat-card__label">Available Parking Slots</div>
+              <div class="progress-card__bar">
+                <div class="progress-card__fill" id="slotFill"></div>
+              </div>
+              <div class="progress-card__label">
+                <span id="slotCount">0</span> /
+                <span id="slotTotal">0</span> occupied (<span id="slotPerc"
+                  >0</span
+                >%)
+              </div>
+            </div>
+          </div>
+          <section class="quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="quick-actions__buttons">
+              <button
+                class="quick-action-btn"
+                onclick="window.location.href = 'vehicleRegistration.html'"
+              >
+                Register Arrival
+              </button>
+              <button
+                class="quick-action-btn"
+                onclick="window.location.href = 'vehicleSignOut.html'"
+              >
+                Vehicle Sign-out
+              </button>
+              <button class="quick-action-btn" onclick="window.print()">
+                Print Daily Summary
+              </button>
+            </div>
+          </section>
+          <section class="recent-arrivals">
+            <h3>Recent Arrivals</h3>
+            <table class="arrivals-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Plate Number</th>
+                  <th>Vehicle Type</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>08:15</td>
+                  <td>UAX 123A</td>
+                  <td>Personal Car</td>
+                  <td><span class="status-badge parked">Parked</span></td>
+                  <td>
+                    <button class="actions-menu" title="More actions">⋮</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>08:22</td>
+                  <td>UBR 456B</td>
+                  <td>Boda Boda</td>
+                  <td>
+                    <span class="status-badge signed-out">Signed Out</span>
+                  </td>
+                  <td>
+                    <button class="actions-menu" title="More actions">⋮</button>
+                  </td>
+                </tr>
+                <!-- More rows can be dynamically added here -->
+              </tbody>
+            </table>
+          </section>
+
+          <section id="liveFeed">
+            <h3>Live Activity</h3>
+            <p class="dashboard-help">
+              Updates will appear here as vehicles enter or leave.
+            </p>
+            <ul id="activityLog" class="activity-log"></ul>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const state = {
+        totalVehicles: 42,
+        revenue: 1524000,
+        maxSlots: 60,
+        occupied: 42,
+      };
+
+      const totalVehiclesEl = document.getElementById("totalVehicles");
+      const totalRevenueEl = document.getElementById("totalRevenue");
+      const slotFillEl = document.getElementById("slotFill");
+      const slotCountEl = document.getElementById("slotCount");
+      const slotTotalEl = document.getElementById("slotTotal");
+      const slotPercEl = document.getElementById("slotPerc");
+      const activityLog = document.getElementById("activityLog");
+
+      function formatUGX(value) {
+        return value.toLocaleString(undefined, {
+          style: "currency",
+          currency: "UGX",
+          maximumFractionDigits: 0,
+        });
+      }
+
+      function updateStats() {
+        const { totalVehicles, revenue, maxSlots, occupied } = state;
+        const percent = Math.round((occupied / maxSlots) * 100);
+
+        totalVehiclesEl.textContent = totalVehicles;
+        totalRevenueEl.textContent = formatUGX(revenue);
+        slotCountEl.textContent = occupied;
+        slotTotalEl.textContent = maxSlots;
+        slotPercEl.textContent = percent;
+        slotFillEl.style.width = `${percent}%`;
+      }
+
+      function addActivity(message) {
+        const item = document.createElement("li");
+        item.textContent = `${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} — ${message}`;
+        activityLog.prepend(item);
+        if (activityLog.children.length > 10) {
+          activityLog.removeChild(activityLog.lastChild);
+        }
+      }
+
+      function simulateActivity() {
+        const now = Date.now();
+        const delta = Math.random() < 0.5 ? 1 : -1;
+        state.occupied = Math.max(
+          0,
+          Math.min(state.maxSlots, state.occupied + delta),
+        );
+        state.totalVehicles = Math.max(0, state.totalVehicles + delta);
+        state.revenue += delta > 0 ? 12000 : -8000;
+        updateStats();
+
+        const label = delta > 0 ? "Vehicle parked" : "Vehicle exited";
+        addActivity(
+          `${label}, slots occupied: ${state.occupied}/${state.maxSlots}`,
+        );
+      }
+
+      document
+        .getElementById("notificationBtn")
+        .addEventListener("click", () => {
+          addActivity("Viewed notifications");
+          document
+            .getElementById("notificationBtn")
+            .setAttribute("data-count", "0");
+        });
+
+      document
+        .getElementById("dashboardSearch")
+        .addEventListener("input", (event) => {
+          const term = event.target.value.trim();
+          if (!term) return;
+          addActivity(`Searching for “${term}”`);
+        });
+
+      updateStats();
+      setInterval(simulateActivity, 8000);
+    </script>
+  </body>
+</html>
