@@ -2,7 +2,7 @@ doctype html
 html
   head
     title Vehicle Sign Out
-    link(rel="stylesheet" href="style2.css")
+    link(rel="stylesheet" href="/css/style2.css")
 
   body.signOut-page
     .nav-set
@@ -19,13 +19,13 @@ html
 
         .nav-right
           //- <span class="user-role">Admin</span>
-          a.logout-btn(href="vehicleRegistration.html") Logout
+          a.logout-btn(href="/registerVehicle") Logout
 
       .dashboard
         .form-section
           h2 Vehicle Sign Out
 
-          form#signOutForm
+          form#signOutForm(method="post" action="/signOutVehicle")
             .search-row
               label(for="searchQuery") Search Receipt
               .search-controls

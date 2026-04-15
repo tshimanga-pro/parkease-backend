@@ -21,7 +21,7 @@ html(lang="en")
           a.logout-btn(href="/auth/logIn") Logout
       .form-card
         h2 User Account
-        form#loginForm
+        form#loginForm(method="post" action="/createUser")
           .form-group
             label(for="firstName") First Name
             input(type="text" id="firstName" name="firstName")

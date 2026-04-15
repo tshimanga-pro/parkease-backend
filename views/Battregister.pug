@@ -4,7 +4,7 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Battery Registration
-    link(rel="stylesheet", href="style2.css")
+    link(rel="stylesheet", href="/css/style2.css")
 
   body.register-page
     .nav-set
@@ -13,15 +13,15 @@ html(lang="en")
 
         ul.nav-links
           li
-            a(href="tyreClinic.html") Tyre Service
+            a(href="/tyreService") Tyre Service
 
         .nav-right
-          a.logout-btn(href="managerDashboard.html") Logout
+          a.logout-btn(href="/manager") Logout
 
       .form-card
         h2 Battery Registration Form
 
-        form#batteryForm(methode="post" action="/registerBattery" enctype="multipart/form-data")
+        form#batteryForm()
           .form-group
             label(for="batteryType") Battery Type
             select#batteryType(name="batteryType")

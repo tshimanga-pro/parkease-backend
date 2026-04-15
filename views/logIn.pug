@@ -14,7 +14,7 @@ html(lang="en")
     //- <a href="signOut.html">SIGN OUT</a>
     //- <a href="reports.html">REPORTS</a>
     .container
-      form.form-card#loginForm(novalidate)
+      form.form-card#loginForm(method="post" action="/login")
         h2 Sign In Portal
 
         #loginMessage.form-message(aria-live="polite")

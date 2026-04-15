@@ -9,6 +9,11 @@ const { isAttendant } = require("../middleware/auth");
 const Vehicle = require("../models/VehicleRegistration");
 
 
+router.get("/registerVehicle", (req, res) => {
+  res.render("vehicleRegistration");
+});
+
+
 //Image upload configurations
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -22,9 +27,9 @@ let upload = multer({ storage: storage })
 
 
 //Routing
-router.get('/registerVehicle', isAttendant, (req, res) => {
-    res.render('vehicleRegistration');
-});
+// router.get('/registerVehicle', isAttendant, (req, res) => {
+//     res.render('vehicleRegistration');
+// });
 
 router.post('/registerVehicle', upload.single('vehicleImage'), isAttendant, async (req, res) => {
     try {

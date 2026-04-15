@@ -5,6 +5,11 @@ const {isManager} = require("../middleware/auth")
 
 const Battery = require("../models/BatteryRegistration");
 
+router.get("/registerBattery", (req, res) => {
+  res.render("battregister");
+});
+
+
 //Image upload configurations
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -16,9 +21,9 @@ let storage = multer.diskStorage({
 })
 let upload = multer({ storage: storage })
 
-router.get("/registerBattery", isManager, (req, res) => {
-  res.render("battery");
-});
+// router.get("/registerBattery", isManager, (req, res) => {
+//   res.render("battery");
+// });
 
 router.post("/registerBattery", upload.single('batteryImage'), isManager, async (req, res) => {
   console.log("reached here");
