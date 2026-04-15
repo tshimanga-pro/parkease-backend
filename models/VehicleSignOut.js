@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const VihicleSignedOutSchema = new mongoose.Schema({
+const VehicleSignedOutSchema = new mongoose.Schema({
     recieverName: {
         type: String,
         trim: true
@@ -34,4 +34,4 @@ const VihicleSignedOutSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("VehicleSignedOut", VihicleSignedOutSchema);
+module.exports = mongoose.model("VehicleSignOut", VehicleSignedOutSchema);

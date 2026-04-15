@@ -18,6 +18,7 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const batteryRoutes = require("./routes/batteryRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const vehicleRoutes = require("./routes/vehicleRoutes");
+const signoutRoutes = require("./routes/signoutRoutes");
 
 
 
@@ -75,6 +76,7 @@ app.use("/", dashboardRoutes);
 app.use("/", batteryRoutes);
 app.use ("/", contactRoutes);
 app.use("/", vehicleRoutes);
+app.use("/", signoutRoutes);
 
 
 

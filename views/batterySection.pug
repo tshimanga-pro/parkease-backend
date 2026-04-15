@@ -4,7 +4,7 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Battery Services
-    link(rel="stylesheet", href="style2.css")
+    link(rel="stylesheet", href="/css/style2.css")
 
   body.register-page
     .nav-set
@@ -12,14 +12,14 @@ html(lang="en")
         .logo ParkEase
         ul.nav-links
           li
-            a(href="tyreClinic.html") Tyre Clinic
+            a(href="/tyreService") Tyre Clinic
         .nav-right
-          a.logout-btn(href="dashboardManeger.html") Logout
+          a.logout-btn(href="/manager") Logout
 
       .form-card
         h2 Battery Hire and Sale Service
 
-        form#batteryForm
+        form#batteryForm(method="post, action="/)
           .form-group
             label(for="batteryType") Battery Type
             select#batteryType(name="batteryType")
