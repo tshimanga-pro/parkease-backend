@@ -3,7 +3,7 @@ const isAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect("/login")
+    res.redirect("/auth/login")
 }
 //Check if a logged in user is an Admin
 const isAdmin = (req, res, next) => {
