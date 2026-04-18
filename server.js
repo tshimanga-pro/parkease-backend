@@ -24,7 +24,7 @@ const signoutRoutes = require("./routes/signoutRoutes");
 
 // 2.Instantiations
 const app = express();
-const PORT = 3005;
+const PORT = 3005 ;
 
 // 3.Configurations
 //Mongodb settings- setting up connections to the database.

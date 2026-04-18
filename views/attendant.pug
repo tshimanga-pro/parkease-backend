@@ -12,14 +12,14 @@ html(lang="en")
         .dashboard-sidebar__logo ParkEase
 
         nav.dashboard-nav
-          a.active(href="homepage.html") Home
-          a(href="vehicleRegistration.html") Register Vehicle
+          a.active(href="/") Home
+          a(href="/registerVehicle") Register Vehicle
           a(href="#") Settings
 
         .dashboard-user
           .dashboard-user__role Parking Attendant
           .dashboard-user__email attendant@example.com
-          a.logout-btn(href="logIn.html") Logout
+          a.logout-btn(href="/auth/logIn") Logout
 
       main.dashboard-main
         header.dashboard-topbar
@@ -66,11 +66,11 @@ html(lang="en")
             h3 Quick Actions
             .quick-actions__buttons
               button.quick-action-btn(
-                onclick="window.location.href = 'vehicleRegistration.html'"
+                onclick="window.location.href = '/registerVehicle'"
               ) Register Arrival
 
               button.quick-action-btn(
-                onclick="window.location.href = 'vehicleSignOut.html'"
+                onclick="window.location.href = '/signout'"
               ) Vehicle Sign-out
 
               button.quick-action-btn(

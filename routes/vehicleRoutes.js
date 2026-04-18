@@ -13,6 +13,10 @@ router.get("/registerVehicle", (req, res) => {
   res.render("vehicleRegistration");
 });
 
+router.post("/registerVehicle", (req, res) => {
+  res.redirect("/attendant");
+});
+
 
 //Image upload configurations
 let storage = multer.diskStorage({

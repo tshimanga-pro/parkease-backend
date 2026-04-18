@@ -10,11 +10,8 @@ html(lang="en")
     link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
     link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato&display=swap")
   body
-    //- <a href="register.html">Click Me</a>
-    //- <a href="signOut.html">SIGN OUT</a>
-    //- <a href="reports.html">REPORTS</a>
     .container
-      form.form-card#loginForm(method="post" action="/login")
+      form.form-card#loginForm(method="post" action="/auth/login")
         h2 Sign In Portal
 
         #loginMessage.form-message(aria-live="polite")
