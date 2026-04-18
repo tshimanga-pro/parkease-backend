@@ -1,33 +1,42 @@
 const express = require("express");
 const router = express.Router();
-const crypto = require("crypto");
-const multer = require("multer");
-const { isAttendant } = require("../middleware/auth");
+// const crypto = require("crypto");
+// const multer = require("multer");
+// const { isAttendant } = require("../middleware/auth");
 
 
 //Import model files
-const Vehicle = require("../models/VehicleRegistration");
+const VehicleRegistration = require("../models/VehicleRegistration");
 
 
 router.get("/registerVehicle", (req, res) => {
   res.render("vehicleRegistration");
 });
 
-router.post("/registerVehicle", (req, res) => {
-  res.redirect("/attendant");
+router.post("/registerVehicle", async(req, res) => {
+    try {
+        const newVehicle = new VehicleRegistration(req.body)
+        console.log(req.body)
+        await newVehicle.save();
+          res.redirect("/attendant");
+    } catch (error) {
+        console.error(error)
+        res.render("vehicleRegistration");
+    }
+
 });
 
 
 //Image upload configurations
-let storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public/uploads')
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname)
-    }
-})
-let upload = multer({ storage: storage })
+// let storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'public/uploads')
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, file.originalname)
+//     }
+// })
+// let upload = multer({ storage: storage })
 
 
 //Routing
@@ -35,30 +44,30 @@ let upload = multer({ storage: storage })
 //     res.render('vehicleRegistration');
 // });
 
-router.post('/registerVehicle', upload.single('vehicleImage'), isAttendant, async (req, res) => {
-    try {
-        const uniqueTicket = "Rcpt-" + crypto.randomBytes(3).toString("hex").toUpperCase();
-        const newVehicle = new Vehicle({
-            driverName: req.body.driverName,
-            phoneNumber: req.body.phoneNumber,
-            vehicleType: req.body.vehicleType,
-            numberPlate: req.body.numberPlate,
-            vehicleModel: req.body.vehicleModel,
-            vehicleColor: req.body.vehicleColor,
-            ninNumber: req.body.ninNumber,
-            arrivalTime: req.body.arrivalTime,
-            receiptNumber: uniqueTicket,
-            vehicleImage: req.file.path
-        })
-        console.log(newVehicle)
-        await newVehicle.save();
-        res.redirect('/')
-    } catch (error) {
-        console.error(error)
-        res.render("vehicleRegistration")
-    }
+// router.post('/registerVehicle', upload.single('vehicleImage'), isAttendant, async (req, res) => {
+//     try {
+//         const uniqueTicket = "Rcpt-" + crypto.randomBytes(3).toString("hex").toUpperCase();
+//         const newVehicle = new Vehicle({
+//             driverName: req.body.driverName,
+//             phoneNumber: req.body.phoneNumber,
+//             vehicleType: req.body.vehicleType,
+//             numberPlate: req.body.numberPlate,
+//             vehicleModel: req.body.vehicleModel,
+//             vehicleColor: req.body.vehicleColor,
+//             ninNumber: req.body.ninNumber,
+//             arrivalTime: req.body.arrivalTime,
+//             receiptNumber: uniqueTicket,
+//             vehicleImage: req.file.path
+//         })
+//         console.log(newVehicle)
+//         await newVehicle.save();
+//         res.redirect('/')
+//     } catch (error) {
+//         console.error(error)
+//         res.render("vehicleRegistration")
+//     }
 
-});
+// });
 
 
 

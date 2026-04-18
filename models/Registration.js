@@ -14,6 +14,7 @@ const registrationSchema = new mongoose.Schema({
     type: String,
     unique: true
   },
+
   telephone: {
     type: String,
     trim: true
@@ -23,6 +24,5 @@ const registrationSchema = new mongoose.Schema({
   },
 });
 registrationSchema.plugin(passportLocalMongoose, {usernameField: "email"})
-
 
 module.exports = mongoose.model("Registration", registrationSchema);

@@ -13,7 +13,7 @@ router.get("/Signup", (req, res) => {
 router.post("/Signup", async (req, res) => {
   try {
       const newUser = Registration(req.body)
-  await newUser.save();
+  await Registration.register(newUser, req.body.password);
    res.redirect("/admin")
   } catch (error) {
     console.error(error)
@@ -26,8 +26,19 @@ router.post("/Signup", async (req, res) => {
 router.get("/login", (req, res) => {
   res.render("logIn");
 });
-router.post("/login", (req, res) => {
-  res.render("/logIn");
+router.post("/login", passport.authenticate("local", {
+failureRedirect:"/login"
+}),(req, res) => {
+  if(req.user.role === "Admin"){
+    res.redirect("/admin")
+  } else if(req.user.role === "Manager"){
+    res.redirect("/manager")
+  } else if(req.user.role === "Attendant"){
+    res.redirect("/attendant")
+  } else{
+    res.redirect("/");
+  }
+  
 });
 
 // router.post("/login", passport.authenticate("local", {

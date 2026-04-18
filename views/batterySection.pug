@@ -19,7 +19,7 @@ html(lang="en")
       .form-card
         h2 Battery Hire and Sale Service
 
-        form#batteryForm(method="post, action="/)
+        form#batteryForm(method="post", action="/tyreService)
           .form-group
             label(for="batteryType") Battery Type
             select#batteryType(name="batteryType")
@@ -29,9 +29,9 @@ html(lang="en")
               option(value="12V Motorcycle") 12V Motorcycle Battery
 
           .form-group
-            label(for="serviceType") Service Type
+            label(for="serviceType") Transaction Type
             select#serviceType(name="serviceType")
-              option(value="") -- Select Service --
+              option(value="") -- Select Transaction --
               option(value="hire") Hire
               option(value="sale") Sale
 

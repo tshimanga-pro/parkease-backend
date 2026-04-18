@@ -16,10 +16,10 @@ html(lang="en")
           a.logout-btn(href="/manager") Logout
       .form-card
         h2 Tyre Clinic
-        form#tyreForm(method="post" action="/tyreService" enctype="multipart/form-data")
+        form#tyreForm(method="post" action="/tyreService")
           .form-group
             label(for="tyreSize") Tyre Size
-            select#tyreSize(name="tyreSize" required)
+            select#tyreSize(name="tyreSize")
               option(value="") -- Select Size --
               option(value="14") 14
               option(value="15") 15
@@ -28,13 +28,13 @@ html(lang="en")
               option(value="18") 18
           .form-group
             label(for="tyreModel") Tyre Model
-            select#tyreModel(name="tyreModel" required)
+            select#tyreModel(name="tyreModel")
               option(value="") -- Select Model --
               option(value="Basic") Basic
               option(value="Standard") Standard
               option(value="Premium") Premium
           .form-group
-            label Services
+            label Tyre Service
             div
               input(type="checkbox" id="pressure" name="services" value="pressure")
               label(for="pressure") Pressure Check (UGX 500)

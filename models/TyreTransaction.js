@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const TyreTransactionSchema = new mongoose.Schema({
-  numberPlate: {
+  tyreSize: {
     type: String,
   },
   serviceType: {
     type: String,
     enum: ["Pressure", "Puncture Fixing","Valves"],
   },
-    modelType: {
+    tyreModel: {
     type: String,
     enum: ["Basic", "Standard","Premium"],
   },

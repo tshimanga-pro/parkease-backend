@@ -32,7 +32,7 @@ router.post("/registerBattery", upload.single('batteryImage'), isManager, async 
     newBattery.batteryImage = req.file.path
     console.log(newBattery);
     await newBattery.save();
-    res.redirect("/");
+    res.redirect("/manager");
   } catch (error) {
     console.error(error);
     res.render("battery");
