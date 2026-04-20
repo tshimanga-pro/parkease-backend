@@ -3,14 +3,14 @@ block content
     table
             thead
             tr
-                th Battery image
-                th batteryType
-                th batteryBrand
+                th Battery Image
+                th battery Type
+                th battery Brand
             tbody
                 if batteries.length 
                     each battery in batteries 
                         tr
                             td 
-                                img(src = "/" + battery.batteryImage alt = "Battery image" width = "150px" height = "170px")
+                                img(src = "/" + battery.batteryImage alt = "Battery image" width = "100px" height = "120px")
                             td #{battery.batteryType}
                             td #{battery.batterySize}

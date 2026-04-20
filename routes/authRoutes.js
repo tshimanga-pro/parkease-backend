@@ -38,28 +38,13 @@ failureRedirect:"/login"
   } else{
     res.redirect("/");
   }
-  
-});
+  });
 
-// router.post("/login", passport.authenticate("local", {
-//   failureRedirect: "/login"
-// }), (req, res) => {
-//   if(req.user.role === "Admin") {
-//     res.redirect("/admin")
-//   } else if(req.user.role === "Manager") {
-//     res.redirect("/manager")
-//   } else if(req.user.role === "Attendant") {
-//     res.redirect("/attendant")
-//   } else {
-//     res.redirect("/");
-//   }
-// });
-
-// router.get("/logout", (req, res, next) => {
-//   req.logout(function(err) {
-//     if(err) { return next(err); }
-//     res.redirect("/auth/login")
-//   })
-// })
+router.get("/logout", (req, res, next) => {
+  req.logout(function(err) {
+    if(err) { return next(err); }
+    res.redirect("/")
+  })
+})
 
 module.exports = router;

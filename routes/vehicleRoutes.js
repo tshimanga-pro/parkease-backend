@@ -1,21 +1,46 @@
 const express = require("express");
 const router = express.Router();
-// const crypto = require("crypto");
-// const multer = require("multer");
+const crypto = require("crypto");
+const multer = require("multer");
 // const { isAttendant } = require("../middleware/auth");
 
 
 //Import model files
 const VehicleRegistration = require("../models/VehicleRegistration");
 
+// Image upload configurations
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public/uploads")
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+})
+let upload = multer({ storage: storage })
 
 router.get("/registerVehicle", (req, res) => {
   res.render("vehicleRegistration");
 });
 
-router.post("/registerVehicle", async(req, res) => {
+router.post("/registerVehicle", upload.single("vehicleImage"), async (req, res) => {
     try {
-        const newVehicle = new VehicleRegistration(req.body)
+        const uniqueTicket = "RCPT-" + crypto.randomBytes(3).toString("hex").UpperCase();
+        const newVehicle = new VehicleRegistration({
+            driverName: req.body.driverName,
+            phoneNumber: req.body.phoneNumber,
+            vehicleType: req.body.vehicleType,
+            numberPlate: req.body.numberPlate,
+            vehicleImage: req.body.vehicleImage,
+            vehicleModel: req.body.vehicleModel,
+            vehicleColor: req.body.vehicleColor,
+            ninNumber: req.body.ninNumber,
+            arrivalTime: req.body.arrivalTime,
+            receiptNumber: uniqueTicket,
+            vehicleImage: req.file.path
+      
+
+        })
         console.log(req.body)
         await newVehicle.save();
           res.redirect("/attendant");
@@ -26,17 +51,6 @@ router.post("/registerVehicle", async(req, res) => {
 
 });
 
-
-//Image upload configurations
-// let storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, 'public/uploads')
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, file.originalname)
-//     }
-// })
-// let upload = multer({ storage: storage })
 
 
 //Routing
