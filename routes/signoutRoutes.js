@@ -12,7 +12,7 @@ router.get("/signout", (req, res) => {
 
 router.post("/signout/verify", async (req, res) => {
   try {
-    const vehicle = await Vehicle.findOne({
+    const vehicle = await VehicleRegistration.findOne({
       receiptNumber: req.body.receiptNumber,
       status: "Parcked",
     });

@@ -17,13 +17,9 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage: storage })
 
-router.get("/registerBattery", (req, res) => {
-  res.render("battregister");
-});
-
-// router.get("/registerBattery", isManager, (req, res) => {
-//   res.render("battery");
-// });
+router.get("/registerBattery", isManager, (req, res) => {
+  res.render("battery");
+})
 
 router.post("/registerBattery", upload.single('batteryImage'), isManager, async (req, res) => {
   console.log("reached here");
