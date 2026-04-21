@@ -4,14 +4,14 @@ const crypto = require("crypto");
 const multer = require("multer");
 const { isAuthenticated, isAttendant } = require("../middleware/auth");
 
-
+// req.body.arrivalTime = today;
 //Import model files
 const VehicleRegistration = require("../models/VehicleRegistration");
 
 // Image upload configurations
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "/public/uploads")
+        cb(null, "public/uploads")
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname)
@@ -39,8 +39,7 @@ router.post("/registerVehicle", upload.single("vehicleImage"), isAttendant, asyn
             arrivalTime: req.body.arrivalTime,
             receiptNumber: uniqueTicket,
             vehicleImage: req.file.path
-      
-
+            
         })
         console.log(req.body)
         await newVehicle.save();

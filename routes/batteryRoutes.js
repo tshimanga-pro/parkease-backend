@@ -3,12 +3,12 @@ const router = express.Router();
 const multer  = require("multer");
 const {isManager} = require("../middleware/auth")
 
-const Battery = require("../models/BatteryRegistration");
+const BatteryRegistration = require("../models/BatteryRegistration");
 
 //Image upload configurations
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "/public/uploads")
+    cb(null, "public/uploads")
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname)
@@ -24,10 +24,11 @@ router.get("/registerBattery", isManager, (req, res) => {
 router.post("/registerBattery", upload.single('batteryImage'), isManager, async (req, res) => {
   console.log("reached here");
   try {
-    const newBattery = new Battery(req.body);
+    const newBattery = new BatteryRegistration(req.body);
     newBattery.batteryImage = req.file.path
-    console.log(newBattery);
     await newBattery.save();
+    console.log(newBattery);
+    
     res.redirect("/manager");
   } catch (error) {
     console.error(error);
