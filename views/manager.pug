@@ -12,15 +12,15 @@ html(lang="en")
         .dashboard-sidebar__logo ParkEase
 
         nav.dashboard-nav
-          a.active(href="homepage.html") Home
-          a(href="#") Contact
+          a.active(href="/") Home
+          a(href="/contact") Contact
           //- a(href="tyreClinic.html") Tyre Service
           //- a(href="batteryRegistration.html") Battery Registration
 
         .dashboard-user
           .dashboard-user__role Service Manager
           .dashboard-user__email manager@example.com
-          a.logout-btn(href="homepage.html") Logout
+          a.logout-btn(href="/auth/login") Logout
 
       // Main Content
       main.dashboard-main
@@ -46,11 +46,11 @@ html(lang="en")
             h3 Quick Actions
 
             .quick-actions__buttons
-              button.quick-action-btn(onclick="window.location.href = 'batterySection.html'")
+              button.quick-action-btn(onclick="window.location.href = /batterySection")
                 | Battery Service
-              button.quick-action-btn(onclick="window.location.href = 'tyreClinic.html'")
+              button.quick-action-btn(onclick="window.location.href = '/tyreService'")
                 | Tyre Service
-              button.quick-action-btn(onclick="window.location.href = 'batteryRegistration.html'")
+              button.quick-action-btn(onclick="window.location.href = '/registerBattery'")
                 | Battery Registration
 
           // Recent Service Activity

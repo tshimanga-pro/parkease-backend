@@ -31,7 +31,7 @@ html(lang="en")
       .form-card
         h2 Vehicle Registration
 
-        form#registrationForm(method="post" action=`/vehicles/update/${vehicle._id}` enctype="multipart-data")
+        form#registrationForm(method="post" action=`/vehicles/update/${vehicle._id}`)
           #formMessage.form-message(aria-live="polite")
 
           label(for="driverName") Driver Name

@@ -11,7 +11,7 @@ const VehicleRegistration = require("../models/VehicleRegistration");
 // Image upload configurations
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "public/uploads")
+        cb(null, "/public/uploads")
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname)
@@ -26,7 +26,7 @@ router.get("/registerVehicle", isAttendant, (req, res) => {
 
 router.post("/registerVehicle", upload.single("vehicleImage"), isAttendant, async (req, res) => {
     try {
-        const uniqueTicket = "RCPT-" + crypto.randomBytes(3).toString("hex").UpperCase();
+        const uniqueTicket = "RCPT-" + crypto.randomBytes(3).toString("hex").toUpperCase();
         const newVehicle = new VehicleRegistration({
             driverName: req.body.driverName,
             phoneNumber: req.body.phoneNumber,
@@ -94,5 +94,7 @@ router.post("/vehicles/delete", async (req, res) => {
         res.status(400).send("Unable to delete vehicle in the Database.")
     }
 })
+
+
 
 module.exports = router;

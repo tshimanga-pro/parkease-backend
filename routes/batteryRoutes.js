@@ -8,7 +8,7 @@ const Battery = require("../models/BatteryRegistration");
 //Image upload configurations
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads")
+    cb(null, "/public/uploads")
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname)
@@ -33,7 +33,7 @@ router.post("/registerBattery", upload.single('batteryImage'), isManager, async 
     console.error(error);
     res.render("battery");
   }
-});
+})
 
 router.get("/batteryList", isManager, async (req, res) => {
   try {
