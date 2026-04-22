@@ -32,12 +32,12 @@ const VehicleRegistrationSchema = new mongoose.Schema({
         trim: true
     },
     arrivalTime: {
-        type: String,
-        // default: Date.now,
+        type: Date,
+        default: Date.now,
     },
-        date: {
-        type: String,
-    },
+    //     date: {
+    //     type: String,
+    // },
     receiptNumber: {
         type: String,
         unique: true
