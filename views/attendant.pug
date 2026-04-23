@@ -67,7 +67,7 @@ html(lang="en")
             .quick-actions__buttons
               button.quick-action-btn(
                 onclick="window.location.href = '/registerVehicle'"
-              ) Register Arrival
+              ) Register Vehicle
 
               button.quick-action-btn(
                 onclick="window.location.href = '/signout'"
@@ -111,11 +111,11 @@ html(lang="en")
             p.dashboard-help Updates will appear here as vehicles enter or leave.
             ul.activity-log#activityLog
 
-    script.
-      const state = {
-        totalVehicles: 42,
-        revenue: 1524000,
-        maxSlots: 60,
-        occupied: 42,
-      };
+    script(scr="public/js/attdash.js")
+      //- const state = {
+      //-   totalVehicles: 42,
+      //-   revenue: 1524000,
+      //-   maxSlots: 60,
+      //-   occupied: 42,
+      //- };
 

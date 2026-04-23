@@ -48,7 +48,7 @@ router.get("/signout/receipt/:id", async (req, res) => {
     }
     res.redirect("/attendant");
   } catch (error) {
-    res.render("vehicleSignout");
+    res.render("vehicleSignout", newSignout);
   }
 });
 

@@ -29,7 +29,7 @@ router.get("/signout", isAttendant, (req, res) => {
   res.render("vehicleSignout");
 });
 
-router.get("/attendant", isAttendant, (req, res) => {
+router.get("/attendant", isAttendant, async (req, res) => {
   res.render("attendant");
 });
 
