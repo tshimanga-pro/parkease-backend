@@ -1,0 +1,40 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Sign Out
+    link(rel="stylesheet", href="/css/style2.css")
+  body.signOut-page
+    .nav-set
+      nav.navbar
+        .logo ParkEase
+
+        ul.nav-links
+          li
+          li
+            a(href="/contact") Contact
+
+        .nav-right
+          span.user-role Parking Attendant
+          a.logout-btn(href="/attendant") Logout
+
+      .form-card
+        h2 Vehicle Sign Out
+
+        form#signOutForm(method="post" action="/signout/verify")
+          #formMessage.form-message(aria-live="polite")
+
+          label(for="receiptNumber") Enter the Receipt Number
+          input#receiptNumber(
+            type="text",
+            name="receiptNumber",
+            placeholder="Receipt Number"
+          )
+
+          #receiptPlaceholder.receipt-placeholder
+            //- Ticket details will be displayed here
+
+          button.btn-submit(type="submit") Sign Out
+
+    script(src="signOut.js")

@@ -3,8 +3,8 @@ const router = express.Router();
 const calculateParkingFee = require("../utils/feeCalculator");
 
 // Importing Models (collection models:botton name in the schema, defines by 'mongoose.model' )
-const Vehicle = require("../models/VehicleRegistration");
-const SignedOut = require("../models/VehicleSignOut");
+const VehicleRegistration = require("../models/VehicleRegistration");
+const VehicleSignOut = require("../models/VehicleSignOut");
 
 router.get("/signout", (req, res) => {
   res.render("vehicleSignout");
@@ -12,32 +12,32 @@ router.get("/signout", (req, res) => {
 
 router.post("/signout/verify", async (req, res) => {
   try {
-    const vehicle = await VehicleRegistration.findOne({
+    const VehicleRegistration = await VehicleRegistration.findOne({
       receiptNumber: req.body.receiptNumber,
       status: "Parcked",
     });
-    if (!Vehicle) {
+    if (!VehicleRegistration) {
       return req.render("vehicleSignout");
     }
-    const fee = calculateParkingFee(Vehicle.vehicleType, Vehicle.arrivalDate);
-    res.render("vehicleSignout", { vehicle, free });
+    const fee = calculateParkingFee(VehicleRegistration.vehicleType, Vehicle.arrivalDate);
+    res.render("vehicleSignout", { VehicleRegistration, free });
   } catch (error) {
     res.render("vehicleSignout");
   }
 });
 router.post("/signout/confirm", async (req, res) => {
   try {
-    const newSignout = await SignedOut(req.body);
+    const newSignout = await VehicleSignOut(req.body);
     const savedSignOut = await newSignout.save();
-    await Vehicle.findByIdAndUpdate(req.body.VehicleId, {
+    await VehicleRegistration.findByIdAndUpdate(req.body.VehicleId, {
       status: "Signed-out",
     });
-    res.redirect(`/signout/ticket/${savedSignOut._id}`);
+    res.redirect(`/signout/receipt/${savedSignOut._id}`);
   } catch (error) {
     res.render("vehicleSignout");
   }
 });
-router.post("/signout/ticket/:id", async (req, res) => {
+router.get("/signout/receipt/:id", async (req, res) => {
   try {
     const newSignout = await SignedOut.findById(req.params.id).populate(
       "vehicleId",

@@ -1,0 +1,95 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Vehicle Sign Out
+    link(rel="stylesheet", href="/css/style2.css")
+    //- link(rel="dash", href="dashBoardPage.html")
+
+  body.signOut-page
+    .nav-set
+      nav.navbar
+        .logo ParkEase
+
+        ul.nav-links
+          li
+            //- a.register-link(href="vehicleRegistration.html") Register Vehicle
+          li
+            a(href="/contact") Contact
+          //- li: a(href="batterySection.html") Battery Section
+          //- li: a(href="tyreClinic.html") Tyre Clinic
+          //- li: a(href="vehicleSignOut.html") Check Out
+
+        .nav-right
+          span.user-role Parking Attendant
+          a.logout-btn(href="/attendant") Logout
+
+      .form-card
+        h2 Vehicle Confirm Sign Out
+        span #{vehicle.vehicleType} (#{vehicle.numberPlate})
+        span= new Date(vehicle.arrivalTime).toLocaleString()
+        span #{fee.toLocalString()}
+        form#signOutForm(method="post" action="/signout/confirm")
+          #formMessage.form-message(aria-live="polite")
+          input(type='hidden' name='receiptNumber' value=vehicle.receiptNumber)
+          input(type='hidden' name='vehicleId' value=vehicle._id)
+          input(type='hidden' name='amountPaid' value=fee)
+
+          label(for="receiptNumber") Receipt Number
+          input#receiptNumber(type="text", name="receiptNumber")
+
+          label(for="vehicleId") Vehicle ID
+          input#vehicleId(type="text", name="vehicleId")
+
+          label(for="vehicleType") Vehicle Type
+          select#vehicleType(name="vehicleType")
+            option(value="") -- Select Vehicle Type --
+            option(value="Truck") Truck
+            option(value="Personal Car") Personal Car
+            option(value="Taxi") Taxi
+            option(value="Coaster") Coaster
+            option(value="Boda Boda") Boda Boda
+
+          label(for="vehiclePlate") Vehicle Plate Number
+          input#vehiclePlate(
+            type="text",
+            name="vehiclePlate",
+            pattern="[A-Za-z0-9\\- ]+",
+            title="Alphanumeric characters only"
+          )
+
+          //- label(for="date") Date
+          //- input#date(type="date", name="date")
+
+          label(for="receiverName") Receiver Name
+          input#receiverName(type="text", name="receiverName")
+
+          label(for="phoneNumber") Client Phone Number
+          input#phoneNumber(
+            type="tel",
+            name="phoneNumber",
+            pattern="[0-9]{10}",
+            title="10 digit phone number"
+          )
+
+          label(for="gender") Gender
+          select#gender(name="gender")
+            option(value="") --Select--
+            option(value="Male") Male
+            option(value="Female") Female
+
+          label(for="ninNumber") NIN Number
+          input#ninNumber(
+            type="text",
+            name="ninNumber",
+            pattern="[0-9]{8,10}",
+            title="8–10 digit NIN"
+          )
+
+          label(for="amountPaid") Amount Paid (UGX)
+          input#amountPaid(type="number", name="amountPaid", step="0.01", min="0")
+
+          button.btn-submit(type="submit") Sign Out
+
+    script(src="signOut.js")

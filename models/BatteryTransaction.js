@@ -5,7 +5,7 @@ const BattryTransactionSchema = new mongoose.Schema({
     },
     batteryId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Battery"
+        ref: "BatteryRegistration"
     },
     transactionType: {
         type: String,
