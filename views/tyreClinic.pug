@@ -61,18 +61,20 @@ html(lang="en")
           p#valvesTotalDisplay Total Valves Replacement: UGX 0
           p#grandServiceTotal
             strong Grand Service Total: UGX 0
-    script.
-      let serviceTotals = {
+    
+    script(src="public/js/tyre.js")
+    
+      //- let serviceTotals = {
           pressure: 0,
           puncture: 0,
           valves: 0
-      };
+      //- };
 
-      const tyrePrices = {
+      //- const tyrePrices = {
           14: { Basic: 100000, Standard: 150000, Premium: 200000 },
           15: { Basic: 120000, Standard: 170000, Premium: 220000 },
           16: { Basic: 140000, Standard: 190000, Premium: 240000 },
           17: { Basic: 160000, Standard: 210000, Premium: 260000 },
           18: { Basic: 180000, Standard: 230000, Premium: 280000 }
-      };
+      //- };
 

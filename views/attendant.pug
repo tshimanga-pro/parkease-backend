@@ -4,6 +4,8 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Attendant Dashboard
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB' crossorigin='anonymous')
+    link(href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css')
     link(rel="stylesheet" href="/css/style2.css")
 
   body
@@ -82,40 +84,47 @@ html(lang="en")
             table.arrivals-table
               thead
                 tr
-                  th Time
-                  th Plate Number
+                  th Driver Name
+                  th Phone Number
                   th Vehicle Type
+                  th Number Plate
+                  th Vehicle Model
+                  th Vehicle Color
+                  th Arrival Time
                   th Status
+                  th Receipt Number
                   th Actions
               tbody
-                tr
-                  td 08:15
-                  td UAX 123A
-                  td Personal Car
-                  td
-                    span.status-badge.parked Parked
-                  td
-                    button.actions-menu(title="More actions") ⋮
-
-                tr
-                  td 08:22
-                  td UBR 456B
-                  td Boda Boda
-                  td
-                    span.status-badge.signed-out Signed Out
-                  td
-                    button.actions-menu(title="More actions") ⋮
+                  if VehicleRegistration && vehicleregistrations.length
+                      each VehicleRegistration in vehicleregistrations
+                           tr
+                              td 
+                                   img(src="/"+VehicleRegistration.vehicleImage alt="vehicle image" width 90 px)
+                              td #{VehicleRegistration.driverName}
+                              td #{VehicleRegistration.phoneNumber}
+                              td #{VehicleRegistration.vehicleType}
+                              td #{VehicleRegistration.numberPlate}
+                              td #{VehicleRegistration.vehicleModel}
+                              td #{VehicleRegistration.vehicleColor}
+                              td #{VehicleRegistration.arrivalTime}
+                              td #{VehicleRegistration.status}
+                              td #{VehicleRegistration.receiptNumber}
+                              td 
+                                button.btn.btn-sm.btn-outline-primary(onclick=`navigator.clipboard.writeText("${VehicleRegistration.receiptNumber})"; alert("Receipt ${VehicleRegistration.receiptNumber} copied");`)
+                                i.fa-solid.fa-copy.me-1
+                                | Copy
+                  else
+                          tr
+                              td No vehicle found
+                  
+                              
 
           section#liveFeed
             h3 Live Activity
             p.dashboard-help Updates will appear here as vehicles enter or leave.
             ul.activity-log#activityLog
 
-    script(scr="public/js/attdash.js")
-      //- const state = {
-      //-   totalVehicles: 42,
-      //-   revenue: 1524000,
-      //-   maxSlots: 60,
-      //-   occupied: 42,
-      //- };
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js' integrity='sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI' crossorigin='anonymous')
+        
 
+    script(scr="public/js/attdash.js")

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {isAuthenticated, isAdmin, isManager, isAttendant} = require("../middleware/auth")
 
-const TyreClinic = require("../models/TyreTransaction");
+const TyreTransaction = require("../models/TyreTransaction");
 
 router.get("/tyreService", (req, res) => {
   res.render("tyreClinic");
@@ -11,7 +11,7 @@ router.get("/tyreService", (req, res) => {
 router.post("/tyreService", async (req, res) => {
   console.log("reached here");
   try {
-    const newTyre = new Tyre(req.body);
+    const newTyre = new TyreTransaction(req.body);
     console.log(newTyre);
     await newTyre.save();
     res.redirect("/tyreService");
