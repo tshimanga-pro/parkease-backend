@@ -123,3 +123,78 @@
         loadTotals();
         renderActivityList();
     
+
+        //  Extra
+
+    //           const STORAGE_KEY = "parkEaseBatteryTransactions";
+
+    //   let hireTotal = 0;
+    //   let saleTotal = 0;
+
+    //   const batteryPrices = {
+    //     hire: {
+    //       "12V Car": 5000,
+    //       "24V Truck": 10000,
+    //       "12V Motorcycle": 3000,
+    //     },
+    //     sale: {
+    //       "12V Car": 150000,
+    //       "24V Truck": 300000,
+    //       "12V Motorcycle": 50000,
+    //     },
+    //   };
+
+    //   function getBatteryTransactions() {
+    //     try {
+    //       const raw = localStorage.getItem(STORAGE_KEY);
+    //       return raw ? JSON.parse(raw) : [];
+    //     } catch {
+    //       return [];
+    //     }
+    //   }
+
+    //   function saveBatteryTransactions(transactions) {
+    //     localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+    //   }
+
+    //   function addBatteryTransaction(transaction) {
+    //     const transactions = getBatteryTransactions();
+    //     transactions.push(transaction);
+    //     saveBatteryTransactions(transactions);
+    //   }
+
+    //   document.getElementById("serviceType").addEventListener("change", function () {
+    //     const serviceType = this.value;
+    //     const daysGroup = document.getElementById("daysGroup");
+    //     if (serviceType === "hire") {
+    //       daysGroup.style.display = "block";
+    //     } else {
+    //       daysGroup.style.display = "none";
+    //     }
+    //   });
+
+    //   document.getElementById("calculateBtn").addEventListener("click", function () {
+    //     const type = document.getElementById("batteryType").value;
+    //     const service = document.getElementById("serviceType").value;
+    //     const days = parseInt(document.getElementById("days").value) || 1;
+
+    //     if (!type || !service) {
+    //       alert("Please select battery type and service type.");
+    //       return;
+    //     }
+
+    //     let price = batteryPrices[service][type];
+    //     if (service === "hire") {
+    //       price *= days;
+    //     }
+
+    //     const transaction = {
+    //       batteryType: type,
+    //       serviceType: service,
+    //       days: service === "hire" ? days : 0,
+    //       price,
+    //       createdAt: new Date().toISOString(),
+    //     };
+
+    //     addBatteryTransaction(transaction);
+    //   });

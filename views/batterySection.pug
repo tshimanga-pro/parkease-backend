@@ -14,118 +14,47 @@ html(lang="en")
           li
             a(href="/tyreService") Tyre Clinic
         .nav-right
-          a.logout-btn(href="/manager") Logout
+          a.logout-btn(href="/Maneger") Logout
 
       .form-card
         h2 Battery Hire and Sale Service
 
-        form#batteryForm(method="post", action="/tyreService)
-          .form-group
-            label(for="batteryType") Battery Type
-            select#batteryType(name="batteryType")
-              option(value="") -- Select Type --
-              option(value="12V Car") 12V Car Battery
-              option(value="24V Truck") 24V Truck Battery
-              option(value="12V Motorcycle") 12V Motorcycle Battery
+        form#batteryForm(method="post" action="/battryServices")
+                    .form-group
+            label(for="BatteryRegistrationId") Select Battery
+            select#batteryRegistrationId(name="BatteryRegistrationId")
+              option(value="" selected disabled) -- Choose Battery--
+              if availableBattries && availableBattries.length > 0
+                 each battery in availableBattries
+                     option(value=BatteryRegistration._Id ) #{BatteryRegistration.batteryType} - #{BatteryRegistration.batteryBrand}
 
           .form-group
-            label(for="serviceType") Transaction Type
-            select#serviceType(name="serviceType")
+            label(for="numberPlate") Number Plate
+            input#numberPlate(
+              type="text",
+              name="numberPlate",
+              placeholder="Enter Ugandan plate number",
+              pattern="^U[A-Z]{2}\\s?[0-9]{1,4}[A-Z]?$",
+              title="Must start with U and use Ugandan plate format, e.g. UAX 123A",
+              required
+            )
+
+          .form-group
+            label(for="transactionType") Transaction Type
+            select#serviceType(name="transactionType")
               option(value="") -- Select Transaction --
               option(value="hire") Hire
               option(value="sale") Sale
 
-          .form-group#daysGroup(style="display: none;")
-            label(for="days") Number of Days
-            input#days(type="number", name="days", min="1", value="1")
+          .form-group
+            label(for="amountPaid") Amount Paid (UGX)
+            input(
+              type="number"
+              id="amountPaid"
+              name="amountPaid"
+              placeholder="Enter Amount due in UGX"
+            )
 
-          button#calculateBtn.btn(type="button") Calculate Charges
+          button#submitBtn.btn(type="button") submit
 
-        #result.result-section(style="display: none;")
-          h3 Charge Summary
-          p#batteryPrice Battery Price: UGX 0
-          p#grandTotal
-            strong Grand Total: UGX 0
-
-        #activities.activities-section
-          h3 Activities Overview
-          ul#activityList
-
-        #totals.totals-section
-          h3 Total Summary
-          p#hireTotalDisplay Total Hire: UGX 0
-          p#saleTotalDisplay Total Sale: UGX 0
-          p#overallTotalDisplay
-            strong Overall Total: UGX 0
-
-    script.
-      let hireTotal = 0;
-      let saleTotal = 0;
-
-      const batteryPrices = {
-          hire: {
-              "12V Car": 5000,
-              "24V Truck": 10000,
-              "12V Motorcycle": 3000
-          },
-          sale: {
-              "12V Car": 150000,
-              "24V Truck": 300000,
-              "12V Motorcycle": 50000
-          }
-      };
-
-      document.getElementById('serviceType').addEventListener('change', function() {
-          const serviceType = this.value;
-          const daysGroup = document.getElementById('daysGroup');
-          if (serviceType === 'hire') {
-              daysGroup.style.display = 'block';
-          } else {
-              daysGroup.style.display = 'none';
-          }
-      });
-
-      document.getElementById('calculateBtn').addEventListener('click', function() {
-          const type = document.getElementById('batteryType').value;
-          const service = document.getElementById('serviceType').value;
-          const days = parseInt(document.getElementById('days').value) || 1;
-
-          if (!type || !service) {
-              alert('Please select battery type and service type.');
-              return;
-          }
-
-          let price = batteryPrices[service][type];
-          if (service === 'hire') {
-              price *= days;
-          }
-
-          document.getElementById('batteryPrice').textContent =
-              `Battery ${service.charAt(0).toUpperCase() + service.slice(1)} Price: UGX ${price.toLocaleString()}`;
-          document.getElementById('grandTotal').textContent =
-              `Grand Total: UGX ${price.toLocaleString()}`;
-          document.getElementById('result').style.display = 'block';
-
-          if (service === 'hire') {
-              hireTotal += price;
-          } else {
-              saleTotal += price;
-          }
-          updateTotals();
-
-          const activityList = document.getElementById('activityList');
-          const li = document.createElement('li');
-          li.textContent =
-              `${type} - ${service.charAt(0).toUpperCase() + service.slice(1)} ${service === 'hire' ? `for ${days} day(s)` : ''} - Total: UGX ${price.toLocaleString()}`;
-          activityList.appendChild(li);
-      });
-
-      function updateTotals() {
-          const overallTotal = hireTotal + saleTotal;
-          document.getElementById('hireTotalDisplay').textContent =
-              `Total Hire: UGX ${hireTotal.toLocaleString()}`;
-          document.getElementById('saleTotalDisplay').textContent =
-              `Total Sale: UGX ${saleTotal.toLocaleString()}`;
-          document.getElementById('overallTotalDisplay').textContent =
-              `Overall Total: UGX ${overallTotal.toLocaleString()}`;
-      }
+    script(src="public/js/btransaction.js")

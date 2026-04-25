@@ -18,8 +18,9 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const batteryRoutes = require("./routes/batteryRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const vehicleRoutes = require("./routes/vehicleRoutes");
+const managerRoutes = require("./routes/managerRoutes");
 const signoutRoutes = require("./routes/signoutRoutes");
-
+const batteryserviceRoutes = require("./routes/batteryserviceRoutes");
 
 
 // 2.Instantiations
@@ -78,6 +79,8 @@ app.use("/", batteryRoutes);
 app.use ("/", contactRoutes);
 app.use("/", vehicleRoutes);
 app.use("/", signoutRoutes);
+app.use("/", managerRoutes);
+app.use("/", batteryserviceRoutes);
 
 
 
