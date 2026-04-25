@@ -9,16 +9,18 @@ const BatteryTransaction = require("../models/BatteryTransaction");
 const TyreTransaction = require("../models/TyreTransaction");
   
 // Routing
-router.get("/manager", isManager, async (req, res)=>{
-    try {
-        let battries = await BatteryRegistration.find().sort({naturel:-1})
-        res.render("manager", {battries})
-    } catch (error) {
-        res.status(400).send("Manager not found in the Database") 
-    }
-})
+router.get("/manager", isManager, async (req, res) => {
+  try {
+    const availableBatteries = await BatteryRegistration.find({ status: "Available" }).sort({ dateAdded: -1 });
+    const totalAvailableBatteries = availableBatteries.length;
+    res.render("manager", { availableBatteries, totalAvailableBatteries });
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("No batteries available in the database.");
+  }
+});
 
-//Image upload configurations
+// Image upload configurations
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/uploads")
@@ -51,59 +53,55 @@ router.post("/registerBattery", upload.single('batteryImage'), isManager, async 
 
 router.get("/batteryList", isManager, async (req, res) => {
   try {
-    let batteries = await Battery.find().sort({natural: -1})
-    res.render("batteryList", {batteries})
+    const batteries = await BatteryRegistration.find().sort({ dateAdded: -1 });
+    res.render("batteryList", { batteries });
   } catch (error) {
-    
+    console.error(error);
+    res.status(400).send("Unable to load battery list.");
   }
-//   Tyre Transaction
-  router.get("/tyreService", (req, res) => {
+});
+
+// Tyre Transaction
+router.get("/tyreService", isManager, (req, res) => {
+  res.render("tyreClinic");
+});
+
+router.post("/tyreService", isManager, async (req, res) => {
+  try {
+    const newTyre = new TyreTransaction(req.body);
+    await newTyre.save();
+    res.redirect("/tyreService");
+  } catch (error) {
+    console.error(error);
     res.render("tyreClinic");
-  });
-  
-  router.post("/tyreService", async (req, res) => {
-    console.log("reached here");
-    try {
-      const newTyre = new TyreTransaction(req.body);
-      console.log(newTyre);
-      await newTyre.save();
-      res.redirect("/tyreService");
-    } catch (error) {
-      console.error(error);
-      res.render("tyreClinic");
-    }
-  });
-  
+  }
+});
+
 // Battery Services
-  router.get("/battryServices", async (req, res) => {
-    try {
-        const availableBattries = await BatteryRegistration.find({status:Available})
-        res.render("batterySection", {availableBattries});
-    } catch (error) {
-        res.status(400).send("Oaps Battery not found in the Database") 
-    }
- 
-  });
-  
-  router.post("/battryService", async (req, res) => {
-    console.log("reached here");
-    try {
-        // Save new Transaction in Battery Transaction Model
-      const newBattery = new BatteryTransaction(req.body);
-      await newBattery.save();
+router.get("/battryServices", isManager, async (req, res) => {
+  try {
+    const availableBattries = await BatteryRegistration.find({ status: "Available" });
+    res.render("batterySection", { availableBattries });
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("Oops! Battery not found in the database.");
+  }
+});
 
-    // Update Battery Status in the Database  
-      const newBatteryStatus = req.body.transactionType === "Sale" ? "Sold" : "Hired" 
-      await BatteryRegistration.findByIdAndUpdate(req.body.BatteryRegistrationId, {status: newBatteryStatus})
-      res.redirect("/manager");
-    } catch (error) {
-      console.error(error);
-      res.render("batterySection");
-    }
-  });
+router.post("/battryService", isManager, async (req, res) => {
+  try {
+    const newBattery = new BatteryTransaction(req.body);
+    await newBattery.save();
+    const newBatteryStatus = req.body.transactionType === "Sale" ? "Solde" : "Hired";
+    await BatteryRegistration.findByIdAndUpdate(req.body.BatteryRegistrationId, { status: newBatteryStatus });
+    res.redirect("/manager");
+  } catch (error) {
+    console.error(error);
+    res.render("batterySection");
+  }
+});
 
-
-})
+module.exports = router;
 
 
 

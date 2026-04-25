@@ -31,15 +31,15 @@ html(lang="en")
           .cards-grid.cards-row
             .stat-card
               .stat-card__label Battery Services Today
-              .stat-card__value 0
+              .stat-card__value 12
 
             .stat-card
               .stat-card__label Tyre Services Today
-              .stat-card__value 0
+              .stat-card__value 8
 
             .stat-card
               .stat-card__label Batteries Registered
-              .stat-card__value #{totalAvailableBatteries || 0}
+              .stat-card__value 5
 
           // Quick Actions
           section.quick-actions
@@ -55,24 +55,32 @@ html(lang="en")
 
           // Recent Service Activity
           section.recent-arrivals
-            h3 Battery Avaible
+            h3 Recent Service Activity
 
-            table.battery-table
+            table.arrivals-table
               thead
                 tr
-                  th Image
-                  th Battery Type
-                  th Battery Brand
-                  th Battery Status
+                  th Time
+                  th Service
+                  th Item
+                  th Status
               tbody
-                if availableBatteries && availableBatteries.length
-                  each battery in availableBatteries
-                    tr
-                      td
-                        img(src="/" + battery.batteryImage alt="battery image" width="90px")
-                      td #{battery.batteryType}
-                      td #{battery.batteryBrand}
-                      td #{battery.status}
-                else
-                  tr
-                    td(colspan="4") No Battery Available
+                tr
+                  td 09:15
+                  td Battery Service
+                  td 12V Car Battery
+                  td
+                    span.status-badge.parked Completed
+                tr
+                  td 09:40
+                  td Tyre Service
+                  td Puncture Fix
+                  td
+                    span.status-badge.parked Completed
+                tr
+                  td 10:05
+                  td Battery Registration
+                  td Amaron 12V
+                  td
+                    span.status-badge.parked Registered
+                    

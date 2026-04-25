@@ -14,21 +14,21 @@ html(lang="en")
           li
             a(href="/tyreService") Tyre Clinic
         .nav-right
-          a.logout-btn(href="/Maneger") Logout
+          a.logout-btn(href="/manager") Logout
 
       .form-card
         h2 Battery Hire and Sale Service
 
         form#batteryForm(method="post" action="/battryServices")
                     .form-group
-            label(for="BatteryRegistrationId") Select Battery
-            select#batteryRegistrationId(name="BatteryRegistrationId")
-              option(value="" selected disabled) -- Choose Battery--
-              if availableBattries && availableBattries.length > 0
-                 each battery in availableBattries
-                     option(value=BatteryRegistration._Id ) #{BatteryRegistration.batteryType} - #{BatteryRegistration.batteryBrand}
+    label(for="BatteryId") Select Battery
+    select#batteryId(name="BatteryId")
+    option(value="" selected disabled) -- Choose Battery--
+    if availableBattries && availableBattries.length > 0
+        each battery in availableBattries
+            option(value=Battery._Id ) #{Battery.batteryType} - #{Battery.batteryBrand}
 
-          .form-group
+    .form-group
             label(for="numberPlate") Number Plate
             input#numberPlate(
               type="text",
@@ -39,14 +39,14 @@ html(lang="en")
               required
             )
 
-          .form-group
-            label(for="transactionType") Transaction Type
-            select#serviceType(name="transactionType")
+    .form-group
+        label(for="transactionType") Transaction Type
+        select#serviceType(name="transactionType")
               option(value="") -- Select Transaction --
               option(value="hire") Hire
               option(value="sale") Sale
 
-          .form-group
+    .form-group
             label(for="amountPaid") Amount Paid (UGX)
             input(
               type="number"
@@ -55,6 +55,6 @@ html(lang="en")
               placeholder="Enter Amount due in UGX"
             )
 
-          button#submitBtn.btn(type="button") submit
+    button#submitBtn.btn(type="button") submit
 
     script(src="public/js/btransaction.js")

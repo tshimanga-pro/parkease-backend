@@ -45,8 +45,8 @@ html(lang="en")
         section.dashboard-content
           .cards-grid.cards-row
             .stat-card
-              .stat-card__label Total Vehicles Parked
-              .stat-card__value#totalVehicles 0
+              .stat-card__label Total Vehicles Packed
+              .stat-card__value#totalVehicles #{totalVehiclesPacked || 0}
 
             .stat-card
               .stat-card__label Today's Total Revenue (UGX)
@@ -95,27 +95,25 @@ html(lang="en")
                   th Receipt Number
                   th Actions
               tbody
-                  if VehicleRegistration && vehicleregistrations.length
-                      each VehicleRegistration in vehicleregistrations
-                           tr
-                              td 
-                                   img(src="/"+VehicleRegistration.vehicleImage alt="vehicle image" width 90 px)
-                              td #{VehicleRegistration.driverName}
-                              td #{VehicleRegistration.phoneNumber}
-                              td #{VehicleRegistration.vehicleType}
-                              td #{VehicleRegistration.numberPlate}
-                              td #{VehicleRegistration.vehicleModel}
-                              td #{VehicleRegistration.vehicleColor}
-                              td #{VehicleRegistration.arrivalTime}
-                              td #{VehicleRegistration.status}
-                              td #{VehicleRegistration.receiptNumber}
-                              td 
-                                button.btn.btn-sm.btn-outline-primary(onclick=`navigator.clipboard.writeText("${VehicleRegistration.receiptNumber})"; alert("Receipt ${VehicleRegistration.receiptNumber} copied");`)
-                                i.fa-solid.fa-copy.me-1
-                                | Copy
-                  else
-                          tr
-                              td No vehicle found
+                if parkedVehicles && parkedVehicles.length
+                  each vehicle in parkedVehicles
+                    tr
+                      td #{vehicle.driverName}
+                      td #{vehicle.phoneNumber}
+                      td #{vehicle.vehicleType}
+                      td #{vehicle.numberPlate}
+                      td #{vehicle.vehicleModel}
+                      td #{vehicle.vehicleColor}
+                      td #{vehicle.arrivalTime}
+                      td #{vehicle.status}
+                      td #{vehicle.receiptNumber}
+                      td
+                        button.btn.btn-sm.btn-outline-primary(onclick=`navigator.clipboard.writeText("${vehicle.receiptNumber}"); alert("Receipt ${vehicle.receiptNumber} copied");`)
+                          i.fa-solid.fa-copy.me-1
+                          | Copy
+                else
+                  tr
+                    td(colspan="10") No parked vehicles found
                   
                               
 

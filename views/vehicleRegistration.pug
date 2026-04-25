@@ -35,15 +35,25 @@ html(lang="en")
           #formMessage.form-message(aria-live="polite")
 
           label(for="driverName") Driver Name
-          input(type="text" id="driverName" name="driverName" minlength="2")
+          input(
+            type="text"
+            id="driverName"
+            name="driverName"
+            minlength="2"
+            pattern="^[A-Z][a-zA-Z\\s]*$"
+            title="Name must start with capital letter and contain letters/spaces only (no numbers)"
+            required
+          )
 
           label(for="numberPlate") Number Plate
           input(
             type="text"
             id="numberPlate"
             name="numberPlate"
-            pattern="[A-Za-z0-9\- ]+"
-            title="Alphanumeric characters only"
+            pattern="^[Uu][A-Za-z]{2}\\s?\\d{3}[A-Za-z]$"
+            title="Ugandan format (e.g., UAX 123A)"
+            placeholder="UAX 123A"
+            required
           )
 
           label(for="vehicleModel") Vehicle Model
@@ -63,8 +73,10 @@ html(lang="en")
             type="tel"
             id="phoneNumber"
             name="phoneNumber"
-            pattern="[0-9]{10}"
-            title="10 digit phone number"
+            pattern="^(?:07\\d{8}|2567\\d{8}|\\+2567\\d{8})$"
+            title="Valid Ugandan number (0712345678 or +256712345678)"
+            placeholder="0712345678"
+            required
           )
 
           label(for="ninNumber") NIN Number (Required for Boda Bodas)
@@ -72,12 +84,13 @@ html(lang="en")
             type="text"
             id="ninNumber"
             name="ninNumber"
-            pattern="[0-9]{8,10}"
-            title="8–10 digit NIN"
+            pattern="^\\d{8,10}$"
+            title="Valid Ugandan NIN (8–10 digits)"
+            inputmode="numeric"
           )
 
           label(for="vehicleType") Vehicle Type
-          select(id="vehicleType" name="vehicleType")
+          select(id="vehicleType" name="vehicleType" required)
             option(value="") -- Select Vehicle Type --
             option(value="Truck") Truck
             option(value="Personal Car") Personal Car

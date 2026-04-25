@@ -3,6 +3,11 @@ const validateForm = (values) => {
 
   if (!values.driverName || values.driverName.trim().length < 2) {
     errors.push("Driver name must be at least 2 characters.");
+  } else {
+    const namePattern = /^[A-Z][a-zA-Z\s]*$/;
+    if (!namePattern.test(values.driverName.trim())) {
+      errors.push("Driver name must start with a capital letter and contain no numbers.");
+    }
   }
 
   const numberPlatePattern = /^[Uu][A-Za-z]{2}\s?\d{3}[A-Za-z]$/;
@@ -55,3 +60,54 @@ if (values.vehicleType === "Boda Boda") {
 }
   return errors;
 };
+
+// Form submission handler
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("registrationForm");
+  const formMessage = document.getElementById("formMessage");
+
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      const formData = new FormData(form);
+      const values = Object.fromEntries(formData);
+
+      const errors = validateForm(values);
+
+      if (errors.length > 0) {
+        e.preventDefault();
+        formMessage.className = "form-message error";
+        formMessage.innerHTML = errors.map((err) => `<p>${err}</p>`).join("");
+      } else {
+        formMessage.className = "form-message success";
+        formMessage.innerHTML = "<p>Form validated successfully!</p>";
+      }
+    });
+  }
+
+  // Dynamic NIN field requirement for Boda Boda
+  const vehicleTypeSelect = document.getElementById("vehicleType");
+  const ninInput = document.getElementById("ninNumber");
+
+  const ninLabel = document.querySelector('label[for="ninNumber"]');
+
+  const updateNinHighlight = () => {
+    if (vehicleTypeSelect.value === "Boda Boda") {
+      ninInput.setAttribute("required", "");
+      ninInput.classList.add("highlight-input");
+      if (ninLabel) {
+        ninLabel.textContent = "NIN Number (Required for Boda Bodas)";
+      }
+    } else {
+      ninInput.removeAttribute("required");
+      ninInput.classList.remove("highlight-input");
+      if (ninLabel) {
+        ninLabel.textContent = "NIN Number (Required for Boda Bodas)";
+      }
+    }
+  };
+
+  if (vehicleTypeSelect && ninInput) {
+    vehicleTypeSelect.addEventListener("change", updateNinHighlight);
+    updateNinHighlight();
+  }
+});
