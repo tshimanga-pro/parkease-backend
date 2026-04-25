@@ -39,7 +39,7 @@ html(lang="en")
 
             .stat-card
               .stat-card__label Batteries Registered
-              .stat-card__value #{totalAvailableBatteries || 0}
+              .stat-card__value #{totalBatteries || 0}
 
           // Quick Actions
           section.quick-actions
@@ -65,8 +65,8 @@ html(lang="en")
                   th Battery Brand
                   th Battery Status
               tbody
-                if availableBatteries && availableBatteries.length
-                  each battery in availableBatteries
+                if allBatteries && allBatteries.length
+                  each battery in allBatteries
                     tr
                       td
                         img(src="/" + battery.batteryImage alt="battery image" width="90px")
@@ -75,4 +75,4 @@ html(lang="en")
                       td #{battery.status}
                 else
                   tr
-                    td(colspan="4") No Battery Available
+                    td(colspan="4") No Batteries Available
