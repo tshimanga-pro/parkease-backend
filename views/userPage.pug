@@ -21,25 +21,27 @@ html(lang="en")
           a.logout-btn(href="/auth/logIn") Logout
       .form-card
         h2 User Account
+        if error
+          #formMessage.form-message.error #{error}
         form#loginForm(method="post" action="/auth/Signup")
           .form-group
             label(for="firstName") First Name
-            input(type="text" id="firstName" name="firstName")
+            input(type="text" id="firstName" name="firstName" pattern="^[A-Z][a-zA-Z\\s]*$" title="Must start with capital letter and contain no numbers" required)
           .form-group
             label(for="surname") Surname
-            input(type="text" id="surname" name="surname")
+            input(type="text" id="surname" name="surname" pattern="^[A-Z][a-zA-Z\\s]*$" title="Must start with capital letter and contain no numbers" required)
           .form-group
             label(for="email") Email
-            input(type="email" id="email" name="email")
+            input(type="email" id="email" name="email" required)
           .form-group
             label(for="password") Password
-            input(type="password" id="password" name="password" minlength="6")
+            input(type="password" id="password" name="password" minlength="6" required)
           .form-group
             label(for="telephone") Telephone
             input(type="tel" id="telephone" name="telephone")
           .form-group
             label(for="role") Role
-            select(id="role" name="role")
+            select(id="role" name="role" required)
               option(value="") -- Select Role --
               option(value="Admin") Admin
               option(value="Manager") Manager

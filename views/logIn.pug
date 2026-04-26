@@ -14,7 +14,10 @@ html(lang="en")
       form.form-card#loginForm(method="post" action="/auth/login")
         h2 Sign In Portal
 
-        #loginMessage.form-message(aria-live="polite")
+        if error
+          #loginMessage.form-message.error #{error}
+        else
+          #loginMessage.form-message(aria-live="polite")
 
         .input-group
           label(for="email") Email address
