@@ -4,6 +4,7 @@ const {isAuthenticated, isAdmin, isManager, isAttendant} = require("../middlewar
 
 // import models
 const Registration = require('../models/Registration')
+const VehicleRegistration = require('../models/VehicleRegistration')
 
 router.get("/manager", isManager, (req, res) => {
   res.render("manager");
@@ -29,8 +30,24 @@ router.get("/signout", isAttendant, (req, res) => {
   res.render("vehicleSignout");
 });
 
-router.get("/attendant", isAttendant, (req, res) => {
-  res.render("attendant");
+router.get("/attendant", isAttendant, async (req, res) => {
+  try {
+    // Fetch all parked vehicles
+    const parkedVehicles = await VehicleRegistration.find({ status: "Parked" }).sort({ arrivalTime: -1 });
+    // Calculate total vehicles packed
+    const totalVehiclesPacked = parkedVehicles.length;
+    
+    res.render("attendant", { 
+      parkedVehicles, 
+      totalVehiclesPacked 
+    });
+  } catch (error) {
+    console.error(error);
+    res.render("attendant", { 
+      parkedVehicles: [], 
+      totalVehiclesPacked: 0 
+    });
+  }
 });
 
 router.get("/usersList", isAdmin, async (req, res) => {
