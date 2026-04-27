@@ -12,22 +12,16 @@ router.get("/manager", isManager, (req, res) => {
 
 router.get("/admin", async (req, res) => {
   try {
-    // determine the selected date, default to today if none is provided
-    const queryDate = req.query.date? new Date(req.query.date) : new Date();
-    // Created start and end of selected date for mongoDb querying
-    const startOfdate = (queryDate.setHours(0,0,0,0));
-    const endOfdate = (queryDate.setHours(23,59,59,999));
-    // Query signedout vehicle for parking revenue
-    // const signedOutVehicles = await
-
+    const users = await Registration.find().sort({ surname: 1, firstName: 1 });
+    res.render("admin", { users });
   } catch (error) {
-    
+    console.error(error);
+    res.render("admin", { users: [] });
   }
-  res.render("admin");
 });
 
-router.get("/signout", isAttendant, (req, res) => {
-  res.render("vehicleSignout");
+router.get("/signout", isAttendant, (req, res, next) => {
+  next();
 });
 
 router.get("/attendant", isAttendant, async (req, res) => {

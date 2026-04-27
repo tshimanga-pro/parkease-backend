@@ -16,6 +16,7 @@ html(lang="en")
 
       .nav-right
         //- span.user-role Admin
+        a.logout-btn(href="/auth/Signup") Sign a User
         a.logout-btn(href="/") Logout
 
       .admin-header__actions
@@ -56,22 +57,32 @@ html(lang="en")
 
     section.signout-vehicles
       header.signout-vehicles__header
-        h2.signout-vehicles__title Signed-Out Vehicles
+        h2.signout-vehicles__title Registered Users
         p.signout-vehicles__subtitle
-          | Recent exit records with duration and fee details
+          | Manage system users and their roles
 
       .signout-vehicles__table-wrap
         table.signout-vehicles__table
           thead
             tr
-              th Receipt #
-              th Number Plate
-              th In Time
-              th Out Time
-              th Duration
-              th Fee (UGX)
+              th First Name
+              th Surname
+              th Email Address
+              th Telephone
+              th Role
+              th Actions
           tbody#signoutRows
-            tr
-              td(colspan="6" style="text-align: center; opacity: 0.65")
-                | Loading sign-out entries...
+            if users && users.length
+              each user in users
+                tr
+                  td= user.firstName
+                  td= user.surname
+                  td= user.email
+                  td= user.telephone
+                  td= user.role
+                  td
+            else
+              tr
+                td(colspan="6" style="text-align: center; opacity: 0.65")
+                  | No users found in the database.
 
