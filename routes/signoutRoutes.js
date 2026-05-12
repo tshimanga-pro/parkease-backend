@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const calculateParkingFee = require("../utils/feeCalculator");
 
-// Importing Models (collection models:botton name in the schema, defines by 'mongoose.model' )
+// Importing Models
 const VehicleRegistration = require("../models/VehicleRegistration");
 const VehicleSignOut = require("../models/VehicleSignOut");
 
@@ -10,48 +10,111 @@ router.get("/signout", (req, res) => {
   res.render("vehicleSignout");
 });
 
-router.post("/signout/verify", async (req, res) => {
+// Search for vehicle by receipt/ticket - number or plate number
+router.post("/signout/search", async (req, res) => {
+  console.log(req.body);
   try {
-    const VehicleRegistration = await VehicleRegistration.findOne({
-      receiptNumber: req.body.receiptNumber,
-      status: "Parcked",
-    });
-    if (!VehicleRegistration) {
-      return req.render("vehicleSignout");
+    const { searchQuery } = req.body || {};
+
+    if (!searchQuery || searchQuery.trim().length === 0) {
+      return res.status(400).json({ error: "Please enter a ticket number or plate number." });
     }
-    const fee = calculateParkingFee(VehicleRegistration.vehicleType, Vehicle.arrivalDate);
-    res.render("vehicleSignout", { VehicleRegistration, free });
+
+    // Search by receipt number or plate number
+    const vehicle = await VehicleRegistration.findOne({
+      $or: [
+        { receiptNumber: searchQuery.trim().toUpperCase() },
+        { numberPlate: searchQuery.trim().toUpperCase() }
+      ],
+      status: "Parked"
+    });
+
+    if (!vehicle) {
+      return res.status(404).json({ error: "Vehicle not found or already signed out." });
+    }
+
+    // Calculate parking fee
+    const arrivalTime = new Date(vehicle.arrivalTime);
+    const currentTime = new Date();
+    const fee = calculateParkingFee(vehicle.vehicleType, arrivalTime, currentTime);
+
+    res.json({
+      success: true,
+      vehicle: {
+        _id: vehicle._id,
+        driverName: vehicle.driverName,
+        receiptNumber: vehicle.receiptNumber,
+        numberPlate: vehicle.numberPlate,
+        vehicleType: vehicle.vehicleType,
+        arrivalTime: vehicle.arrivalTime,
+        fee: fee
+      }
+    });
   } catch (error) {
-    res.render("vehicleSignout");
+    console.error(error);
+    res.status(500).json({ error: "An error occurred during search." });
   }
 });
+
+// Confirm sign-out and create record
 router.post("/signout/confirm", async (req, res) => {
   try {
-    const newSignout = await VehicleSignOut(req.body);
-    const savedSignOut = await newSignout.save();
-    await VehicleRegistration.findByIdAndUpdate(req.body.VehicleId, {
-      status: "Signed-out",
+    const { vehicleId, receiverName, phoneNumber, gender, ninNumber } = req.body;
+
+    if (!vehicleId) {
+      return res.status(400).render("vehicleSignout", { error: "Vehicle ID is required." });
+    }
+
+    // Find the vehicle
+    const vehicle = await VehicleRegistration.findById(vehicleId);
+    if (!vehicle) {
+      return res.status(404).render("vehicleSignout", { error: "Vehicle not found." });
+    }
+
+    // Calculate fee
+    const arrivalTime = new Date(vehicle.arrivalTime);
+    const currentTime = new Date();
+    const fee = calculateParkingFee(vehicle.vehicleType, arrivalTime, currentTime);
+
+    // Create sign-out record
+    const newSignOut = new VehicleSignOut({
+      vehicleId: vehicleId,
+      receiverName: receiverName,
+      phoneNumber: phoneNumber,
+      gender: gender,
+      ninNumber: ninNumber,
+      signoutTime: currentTime,
+      fee: fee
     });
+
+    const savedSignOut = await newSignOut.save();
+
+    // Update vehicle status to "Signed-out"
+    await VehicleRegistration.findByIdAndUpdate(vehicleId, {
+      status: "Signed-out"
+    });
+
     res.redirect(`/signout/receipt/${savedSignOut._id}`);
   } catch (error) {
-    res.render("vehicleSignout");
+    console.error(error);
+    res.status(500).render("vehicleSignout", { error: "Unable to complete sign-out." });
   }
 });
+
+// Display receipt
 router.get("/signout/receipt/:id", async (req, res) => {
   try {
-    const newSignout = await SignedOut.findById(req.params.id).populate(
-      "vehicleId",
-    );
-    if (!record) {
-      return req.redirect("/signout");
-      req.render("receipt", {record});
+    const signout = await VehicleSignOut.findById(req.params.id).populate("vehicleId");
+
+    if (!signout) {
+      return res.redirect("/signout");
     }
-    res.redirect("/attendant");
+
+    res.render("receipt", { signout });
   } catch (error) {
-    res.render("vehicleSignout", newSignout);
+    console.error(error);
+    res.status(500).render("vehicleSignout", { error: "Unable to load receipt." });
   }
 });
-
-
 
 module.exports = router;

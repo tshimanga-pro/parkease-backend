@@ -1,12 +1,13 @@
 (() => {
-  const STORAGE_KEY = "parkEaseRegistrations";
-
   const searchQuery = document.getElementById("searchQuery");
   const searchBtn = document.getElementById("searchBtn");
+  const signOutForm = document.getElementById("signOutForm");
+  const vehicleIdInput = document.getElementById("vehicleId");
 
   const sidebarMessage = document.getElementById("sidebarMessage");
   const sidebarDetails = document.getElementById("sidebarDetails");
   const sbDriver = document.getElementById("sbDriver");
+  const sbTicket = document.getElementById("sbTicket");
   const sbPlate = document.getElementById("sbPlate");
   const sbVehicle = document.getElementById("sbVehicle");
   const sbArrival = document.getElementById("sbArrival");
@@ -15,16 +16,7 @@
   const sbStatus = document.getElementById("sbStatus");
   const sbSignOut = document.getElementById("sbSignOut");
 
-  let currentEntry = null;
-
-  function getRegistrations() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
-  }
+  let currentVehicle = null;
 
   function formatDateTime(value) {
     if (!value) return "—";
@@ -45,91 +37,84 @@
     return `${hours}h ${minutes}m`;
   }
 
-  function calculateFee(vehicleType, arrivalTime, signOutTime) {
-    const durationMs = signOutTime - arrivalTime;
-    const durationHrs = durationMs / (1000 * 60 * 60);
-    const hour = new Date(arrivalTime).getHours();
-    const isDay = hour >= 6 && hour < 19;
-    const isShort = durationHrs < 3;
-
-    const rates = {
-      Truck: { short: 2000, day: 5000, night: 10000 },
-      "Personal Car": { short: 2000, day: 3000, night: 2000 },
-      Taxi: { short: 2000, day: 3000, night: 2000 },
-      Coaster: { short: 3000, day: 4000, night: 2000 },
-      "Boda Boda": { short: 1000, day: 2000, night: 2000 },
-    };
-
-    const r = rates[vehicleType] || rates["Personal Car"];
-    return isShort ? r.short : isDay ? r.day : r.night;
-  }
-
   function clearSidebar() {
-    currentEntry = null;
-    sidebarMessage.textContent = "Search a receipt or plate to see details here.";
+    currentVehicle = null;
+    vehicleIdInput.value = "";
+    sidebarMessage.textContent = "Search a ticket or plate to see details here.";
     sidebarDetails.hidden = true;
-    sbStatus.textContent = "PENDING SIGN-OUT";
+    sbStatus.textContent = "VEHICLE READY TO CHECKOUT";
     sbStatus.className = "status-badge pending";
     sbSignOut.disabled = true;
   }
 
-  function showSidebarEntry(entry) {
-    currentEntry = entry;
+  function showSidebarEntry(vehicle) {
+    currentVehicle = vehicle;
+    vehicleIdInput.value = vehicle._id;
     sidebarDetails.hidden = false;
     sidebarMessage.textContent = "";
 
     const now = Date.now();
-    const arrivalMs = new Date(entry.arrivalTime || entry.date || Date.now()).getTime();
+    const arrivalMs = new Date(vehicle.arrivalTime).getTime();
     const durationMs = Math.max(0, now - arrivalMs);
 
-    sbDriver.textContent = entry.driverName;
-    sbPlate.textContent = entry.numberPlate;
-    sbVehicle.textContent = entry.vehicleType;
-    sbArrival.textContent = formatDateTime(entry.arrivalTime || entry.date);
+    sbDriver.textContent = vehicle.driverName || "—";
+    sbTicket.textContent = vehicle.receiptNumber || "—";
+    sbPlate.textContent = vehicle.numberPlate || "—";
+    sbVehicle.textContent = vehicle.vehicleType || "—";
+    sbArrival.textContent = formatDateTime(vehicle.arrivalTime);
     sbDuration.textContent = formatDuration(durationMs);
-    sbFee.textContent = `UGX ${calculateFee(entry.vehicleType, arrivalMs, now).toLocaleString()}`;
-
+    sbFee.textContent = `UGX ${vehicle.fee.toLocaleString()}`;
+    sbStatus.textContent = "VEHICLE READY TO CHECKOUT";
+    sbStatus.className = "status-badge pending";
     sbSignOut.disabled = false;
   }
 
-  function findEntry(query) {
-    const normalized = (query || "").trim().toLowerCase();
-    if (!normalized) return null;
-
-    const entries = getRegistrations();
-    return entries.find((entry) => {
-      const plate = (entry.numberPlate || "").toLowerCase();
-      const receiptId = (entry.receiptId || "").toLowerCase();
-      return plate === normalized || receiptId === normalized;
-    });
-  }
-
-  function handleSearch() {
+  async function handleSearch(e) {
+    e.preventDefault();
     clearSidebar();
-    const entry = findEntry(searchQuery.value);
-    if (!entry) {
-      sidebarMessage.textContent = "No matching receipt found. Try a different ID or plate.";
+
+    const query = searchQuery.value.trim();
+    if (!query) {
+      sidebarMessage.textContent = "Please enter a ticket number or plate number.";
       return;
     }
 
-    showSidebarEntry(entry);
+    try {
+      const response = await fetch("/signout/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ searchQuery: query }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        sidebarMessage.textContent = data.error || "Search failed.";
+        return;
+      }
+
+      if (data.success && data.vehicle) {
+        showSidebarEntry(data.vehicle);
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+      sidebarMessage.textContent = "An error occurred during search.";
+    }
   }
 
-  function handleSignOut() {
-    if (!currentEntry) return;
-
-    const remaining = getRegistrations().filter(
-      (entry) => entry.receiptId !== currentEntry.receiptId,
-    );
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(remaining));
-
-    sbStatus.textContent = "SIGNED OUT";
-    sbStatus.className = "status-badge complete";
-    sbSignOut.disabled = true;
+  function handleSignOutClick(e) {
+    e.preventDefault();
+    if (!currentVehicle) {
+      alert("Please search for a vehicle first.");
+      return;
+    }
+    signOutForm.submit();
   }
 
   searchBtn?.addEventListener("click", handleSearch);
-  sbSignOut?.addEventListener("click", handleSignOut);
+  sbSignOut?.addEventListener("click", handleSignOutClick);
 
   document.addEventListener("DOMContentLoaded", () => {
     clearSidebar();

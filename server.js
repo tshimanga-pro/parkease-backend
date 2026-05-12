@@ -56,6 +56,7 @@ app.use(expressSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.json());
 
 /* PASSPORT LOCAL AUTHENTICATION */
 passport.use(Registration.createStrategy());

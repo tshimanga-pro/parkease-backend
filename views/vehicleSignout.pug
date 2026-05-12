@@ -16,9 +16,9 @@ html
         .form-section
           h2 Vehicle Sign Out
 
-          form#signOutForm(method="post", action="/signout/confirm")
+          form#signOutForm(method="get", action="/signout/confirm")
             .search-row
-              label(for="searchQuery") Search Ticket
+              label(for="searchQuery") Search Ticket or Plate
               .search-controls
                 input#searchQuery(
                   type="text",
@@ -26,28 +26,33 @@ html
                 )
                 button#searchBtn.btn-submit(type="button") Search
 
+            input#vehicleId(type="hidden", name="vehicleId")
+
             label Receiver Name
-            input#receiverName(type="text")
+            input#receiverName(type="text", name="receiverName", required)
 
             label Client Phone Number
             input#phoneNumber(
-              type="text",
+              type="tel",
               name="phoneNumber",
               pattern="[0-9]{10}",
-              title="10 digit phone number"
+              title="10 digit phone number",
+              required
             )
 
             label Gender
-            select#gender
+            select#gender(name="gender", required)
               option(value="") --Select--
-              option Male
-              option Female
+              option(value="Male") Male
+              option(value="Female") Female
 
             label NIN Number
             input#ninNumber(
               type="text",
+              name="ninNumber",
               pattern="[0-9]{8,10}",
-              title="8–10 digit NIN"
+              title="8–10 digit NIN",
+              required
             )
             button.btn-submit(type="submit") Generate Receipt
 
@@ -80,8 +85,8 @@ html
               strong Fee:
               span#sbFee — 
             .sidebar-row.status-row
-              span#sbStatus.status-badge.pending PENDING SIGN-OUT
+              span#sbStatus.status-badge.pending VEHICLE READY TO CHECKOUT
 
           button#sbSignOut.btn-submit(type="button", disabled) Confirm Sign-Out
 
-    script(src="signOut.js")
+    script(src="/js/signOut.js")
