@@ -16,7 +16,7 @@ html
         .form-section
           h2 Vehicle Sign Out
 
-          form#signOutForm(method="get", action="/signout/confirm")
+          form#signOutForm(method="post", action="/signout/confirm")
             .search-row
               label(for="searchQuery") Search Ticket or Plate
               .search-controls
@@ -54,7 +54,6 @@ html
               title="8–10 digit NIN",
               required
             )
-            button.btn-submit(type="submit") Generate Receipt
 
         aside#sidebar.sidebar
           h2 Matched Registration
@@ -87,6 +86,6 @@ html
             .sidebar-row.status-row
               span#sbStatus.status-badge.pending VEHICLE READY TO CHECKOUT
 
-          button#sbSignOut.btn-submit(type="button", disabled) Confirm Sign-Out
+          button#sbSignOut.btn-submit(type="button", disabled) Sign-Out and Print Receipt
 
     script(src="/js/signOut.js")

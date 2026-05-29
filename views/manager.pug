@@ -17,10 +17,10 @@ html(lang="en")
           //- a(href="tyreClinic.html") Tyre Service
           //- a(href="batteryRegistration.html") Battery Registration
 
-        .dashboard-user
-          .dashboard-user__role Service Manager
-          .dashboard-user__email manager@example.com
-          a.logout-btn(href="/auth/login") Logout
+        //- .dashboard-user
+        //- .dashboard-user__role #{user?.role || "Service Manager"}
+        //-   .dashboard-user__email #{user?.email || "manager@example.com"}
+        //-   a.logout-btn(href="/auth/login") Logout
 
       // Main Content
       main.dashboard-main
@@ -30,12 +30,12 @@ html(lang="en")
         section.dashboard-content
           .cards-grid.cards-row
             .stat-card
-              .stat-card__label Battery Services Today
-              .stat-card__value 0
+              .stat-card__label Battery Transactions Today
+              .stat-card__value #{batteryTransactionsTodayCount || 0}
 
             .stat-card
               .stat-card__label Tyre Services Today
-              .stat-card__value 0
+              .stat-card__value #{tyreServicesTodayCount || 0}
 
             .stat-card
               .stat-card__label Batteries Registered
@@ -54,8 +54,32 @@ html(lang="en")
                 | Battery Registration
 
           // Recent Service Activity
+          section.recent-activities
+            h3 Recent Service Activity
+
+            table.arrivals-table
+              thead
+                tr
+                  th Time
+                  th Service
+                  th Item
+                  th Status
+              tbody
+                if recentActivities && recentActivities.length
+                  each activity in recentActivities
+                    tr
+                      td #{activity.time}
+                      td #{activity.service}
+                      td #{activity.item}
+                      td
+                        span.status-badge.parked #{activity.status}
+                else
+                  tr
+                    td(colspan="4") No recent service activity found
+
+          // Available Batteries
           section.recent-arrivals
-            h3 Battery Avaible
+            h3 Battery Available
 
             table.battery-table
               thead
@@ -76,3 +100,4 @@ html(lang="en")
                 else
                   tr
                     td(colspan="4") No Batteries Available
+  script(scr="")

@@ -14,7 +14,7 @@ router.get("/signout", (req, res) => {
 router.post("/signout/search", async (req, res) => {
   console.log(req.body);
   try {
-    const { searchQuery } = req.body || {};
+    const { searchQuery } = req.body 
 
     if (!searchQuery || searchQuery.trim().length === 0) {
       return res.status(400).json({ error: "Please enter a ticket number or plate number." });

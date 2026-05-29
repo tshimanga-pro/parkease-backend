@@ -16,6 +16,11 @@
   const sbStatus = document.getElementById("sbStatus");
   const sbSignOut = document.getElementById("sbSignOut");
 
+  const receiverName = document.getElementById("receiverName");
+  const phoneNumber = document.getElementById("phoneNumber");
+  const gender = document.getElementById("gender");
+  const ninNumber = document.getElementById("ninNumber");
+
   let currentVehicle = null;
 
   function formatDateTime(value) {
@@ -106,10 +111,35 @@
 
   function handleSignOutClick(e) {
     e.preventDefault();
+    
+    // Validate vehicle is found
     if (!currentVehicle) {
       alert("Please search for a vehicle first.");
       return;
     }
+
+    // Validate form fields
+    if (!receiverName.value.trim()) {
+      alert("Please enter receiver name.");
+      return;
+    }
+
+    if (!phoneNumber.value.trim()) {
+      alert("Please enter phone number.");
+      return;
+    }
+
+    if (!gender.value) {
+      alert("Please select gender.");
+      return;
+    }
+
+    if (!ninNumber.value.trim()) {
+      alert("Please enter NIN number.");
+      return;
+    }
+
+    // All validations passed, submit form
     signOutForm.submit();
   }
 

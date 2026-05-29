@@ -19,16 +19,22 @@ html(lang="en")
       .form-card
         h2 Battery Hire and Sale Service
 
-        form#batteryForm(method="post" action="/battryServices")
-                    .form-group
-    label(for="BatteryId") Select Battery
-    select#batteryId(name="BatteryId")
-    option(value="" selected disabled) -- Choose Battery--
-    if availableBattries && availableBattries.length > 0
-        each battery in availableBattries
-            //- option(value=Battery._Id ) #{Battery.batteryType} - #{Battery.batteryBrand}
+        if successMessage
+          .success-message(style="color: green; margin-bottom: 1rem;") #{successMessage}
 
-    .form-group
+        if errorMessage
+          .error-message(style="color: red; margin-bottom: 1rem;") #{errorMessage}
+
+        form#batteryForm(method="post" action="/battryServices")
+          .form-group
+            label(for="batteryId") Select Battery
+            select#batteryId(name="batteryId" required)
+              option(value="" selected disabled) -- Choose Battery --
+              if availableBattries && availableBattries.length > 0
+                each battery in availableBattries
+                  option(value=battery._id)= `${battery.batteryType} - ${battery.batteryBrand}`
+
+          .form-group
             label(for="numberPlate") Number Plate
             input#numberPlate(
               type="text",
@@ -39,22 +45,22 @@ html(lang="en")
               required
             )
 
-    .form-group
-        label(for="transactionType") Transaction Type
-        select#serviceType(name="transactionType")
-              option(value="") -- Select Transaction --
-              option(value="hire") Hire
-              option(value="sale") Sale
+          .form-group
+            label(for="transactionType") Transaction Type
+            select#serviceType(name="transactionType" required)
+              option(value="" disabled selected) -- Select Transaction --
+              option(value="Hire") Hire
+              option(value="Sale") Sale
 
-    .form-group
+          .form-group
             label(for="amountPaid") Amount Paid (UGX)
             input(
               type="number"
               id="amountPaid"
               name="amountPaid"
               placeholder="Enter Amount due in UGX"
+              min="0"
+              required
             )
 
-    button#submitBtn.btn(type="button") submit
-
-    script(src="public/js/btransaction.js")
+          button#submitBtn.btn(type="submit") Submit
