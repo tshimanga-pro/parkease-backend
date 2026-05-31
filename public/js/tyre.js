@@ -25,6 +25,11 @@ function renderResult(values) {
     const punctureTotalEl = document.getElementById('punctureTotalDisplay');
     const valvesTotalEl = document.getElementById('valvesTotalDisplay');
     const grandServiceTotalEl = document.getElementById('grandServiceTotal');
+    const amountPaidField = document.getElementById('amountPaid');
+    const pressureTotalField = document.getElementById('pressureTotal');
+    const punctureTotalField = document.getElementById('punctureTotal');
+    const valvesTotalField = document.getElementById('valvesTotal');
+    const servicesTotalField = document.getElementById('servicesTotalInput');
 
     if (!resultSection) return;
 
@@ -36,6 +41,22 @@ function renderResult(values) {
     punctureTotalEl.textContent = `Total Puncture Fixing: UGX ${formatCurrency(values.totals.puncture)}`;
     valvesTotalEl.textContent = `Total Valves Replacement: UGX ${formatCurrency(values.totals.valves)}`;
     grandServiceTotalEl.querySelector('strong').textContent = `Grand Service Total: UGX ${formatCurrency(values.grandServiceTotal)}`;
+
+    if (amountPaidField) {
+        amountPaidField.value = values.grandTotal;
+    }
+    if (pressureTotalField) {
+        pressureTotalField.value = values.totals.pressure;
+    }
+    if (punctureTotalField) {
+        punctureTotalField.value = values.totals.puncture;
+    }
+    if (valvesTotalField) {
+        valvesTotalField.value = values.totals.valves;
+    }
+    if (servicesTotalField) {
+        servicesTotalField.value = values.servicesTotal;
+    }
 }
 
 function getSelectedServices() {
@@ -76,9 +97,19 @@ function handleCalculateCharges() {
         totals,
         grandServiceTotal: servicesTotal
     });
+
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+        submitBtn.disabled = false;
+    }
 }
 
 const calculateBtn = document.getElementById('calculateBtn');
 if (calculateBtn) {
     calculateBtn.addEventListener('click', handleCalculateCharges);
+}
+
+const submitBtn = document.getElementById('submitBtn');
+if (submitBtn) {
+    submitBtn.disabled = true;
 }

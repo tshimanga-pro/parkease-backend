@@ -3,17 +3,32 @@ const TyreTransactionSchema = new mongoose.Schema({
   tyreSize: {
     type: String,
   },
-  serviceType: {
+  services: [{
     type: String,
-    enum: ["Pressure", "Puncture Fixing","Valves"],
-  },
-    tyreModel: {
+  }],
+  tyreModel: {
     type: String,
     enum: ["Basic", "Standard","Premium"],
   },
-
   amountPaid: {
     type: Number,
+    default: 0,
+  },
+  pressureTotal: {
+    type: Number,
+    default: 0,
+  },
+  punctureTotal: {
+    type: Number,
+    default: 0,
+  },
+  valvesTotal: {
+    type: Number,
+    default: 0,
+  },
+  servicesTotal: {
+    type: Number,
+    default: 0,
   },
   transactionDate: {
     type: Date,

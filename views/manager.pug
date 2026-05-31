@@ -31,11 +31,11 @@ html(lang="en")
           .cards-grid.cards-row
             .stat-card
               .stat-card__label Battery Transactions Today
-              .stat-card__value #{batteryTransactionsTodayCount || 0}
+              .stat-card__value #{batteryTransactionsTodayCount || 'UGX 0'}
 
             .stat-card
               .stat-card__label Tyre Services Today
-              .stat-card__value #{tyreServicesTodayCount || 0}
+              .stat-card__value #{formattedTyreServiceTotal || 'UGX 0'}
 
             .stat-card
               .stat-card__label Batteries Registered

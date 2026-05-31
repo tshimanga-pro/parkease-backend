@@ -26,6 +26,23 @@ router.get("/manager", isManager, async (req, res) => {
       transactionDate: { $gte: todayStart, $lte: todayEnd },
     });
 
+    const tyreTodayTotals = await TyreTransaction.aggregate([
+      {
+        $match: {
+          transactionDate: { $gte: todayStart, $lte: todayEnd },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalServicesAmount: { $sum: "$servicesTotal" },
+        },
+      },
+    ]);
+
+    const tyreServicesTotalAmount = tyreTodayTotals.length > 0 ? tyreTodayTotals[0].totalServicesAmount : 0;
+    const formattedTyreServiceTotal = `UGX ${tyreServicesTotalAmount.toLocaleString('en-UG')}`;
+
     const tyreActivities = await TyreTransaction.find({
       transactionDate: { $gte: todayStart, $lte: todayEnd },
     })
@@ -65,6 +82,7 @@ router.get("/manager", isManager, async (req, res) => {
       totalBatteries,
       batteryTransactionsTodayCount,
       tyreServicesTodayCount,
+      formattedTyreServiceTotal,
       recentActivities,
     });
   } catch (error) {
@@ -116,17 +134,54 @@ router.get("/batteryList", isManager, async (req, res) => {
 
 // Tyre Transaction
 router.get("/tyreService", isManager, (req, res) => {
-  res.render("tyreClinic");
+  const successMessage = req.query.success === "1" ? "Tyre service submitted successfully." : null;
+  res.render("tyreClinic", { successMessage });
 });
 
 router.post("/tyreService", isManager, async (req, res) => {
   try {
-    const newTyre = new TyreTransaction(req.body);
+    const {
+      tyreSize,
+      tyreModel,
+      services,
+      amountPaid,
+      pressureTotal,
+      punctureTotal,
+      valvesTotal,
+      servicesTotal,
+    } = req.body;
+
+    const serviceList = Array.isArray(services) ? services : services ? [services] : [];
+    const parsedAmount = Number(amountPaid) || 0;
+    const parsedPressureTotal = Number(pressureTotal) || 0;
+    const parsedPunctureTotal = Number(punctureTotal) || 0;
+    const parsedValvesTotal = Number(valvesTotal) || 0;
+    const parsedServicesTotal = Number(servicesTotal) || 0;
+
+    if (!tyreSize || !tyreModel || !serviceList.length || parsedAmount <= 0 || parsedServicesTotal <= 0) {
+      return res.status(400).render("tyreClinic", {
+        errorMessage: "Please calculate charges and ensure tyre size/model and at least one service are selected before submitting.",
+      });
+    }
+
+    const newTyre = new TyreTransaction({
+      tyreSize,
+      tyreModel,
+      services: serviceList,
+      amountPaid: parsedAmount,
+      pressureTotal: parsedPressureTotal,
+      punctureTotal: parsedPunctureTotal,
+      valvesTotal: parsedValvesTotal,
+      servicesTotal: parsedServicesTotal,
+    });
+
     await newTyre.save();
-    res.redirect("/tyreService");
+    res.redirect("/tyreService?success=1");
   } catch (error) {
     console.error(error);
-    res.render("tyreClinic");
+    res.status(500).render("tyreClinic", {
+      errorMessage: "Unable to save tyre service. Please try again.",
+    });
   }
 });
 
