@@ -400,6 +400,42 @@ input::placeholder {
   padding: 8px 12px;
 }
 
+/* Admin table action buttons */
+.edit-link,
+.delete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.edit-link {
+  background: linear-gradient(90deg, #10b981 0%, #06b6d4 100%);
+  color: #031025;
+}
+
+.edit-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(6, 182, 212, 0.14);
+}
+
+.delete-btn {
+  background: linear-gradient(90deg, #ef4444 0%, #f97316 100%);
+  color: #fff;
+}
+
+.delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(249, 115, 22, 0.14);
+}
+
 .dashboard-search input {
   border: none;
   background: transparent;

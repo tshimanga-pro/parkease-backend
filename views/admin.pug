@@ -46,13 +46,13 @@ html(lang="en")
         article.metric-card
           .metric-card__header
             h3.metric-card__title Tyre Clinic
-          #tyreValue.metric-card__value UGX 1,320
+          #tyreValue.metric-card__value #{formattedTyreServiceTotal || 'UGX 0'}
           #tyreDelta.metric-card__delta.delta-negative ▼ 1.2% vs yesterday
 
         article.metric-card
           .metric-card__header
-            h3.metric-card__title Battery Hire
-          #batteryValue.metric-card__value UGX 950
+            h3.metric-card__title Battery Service
+          #batteryValue.metric-card__value #{formattedBatteryServiceTotal || 'UGX 0'}
           #batteryDelta.metric-card__delta.delta-positive ▲ 2.9% vs yesterday
 
     section.signout-vehicles
@@ -60,6 +60,10 @@ html(lang="en")
         h2.signout-vehicles__title Registered Users
         p.signout-vehicles__subtitle
           | Manage system users and their roles
+
+      if message
+        .message
+          p(style="color: green; font-weight: 600")= message
 
       .signout-vehicles__table-wrap
         table.signout-vehicles__table
@@ -81,6 +85,9 @@ html(lang="en")
                   td= user.telephone
                   td= user.role
                   td
+                    a.edit-link(href="/admin/edit/" + user._id) Edit
+                    form.delete-form(method="post" action="/admin/delete/" + user._id onsubmit="return confirm('Are you sure you want to delete this user?');" style="display:inline;margin-left:0.5rem;")
+                      button.delete-btn(type="submit") Delete
             else
               tr
                 td(colspan="6" style="text-align: center; opacity: 0.65")

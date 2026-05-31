@@ -73,7 +73,5 @@ html(lang="en")
           p#valvesTotalDisplay Total Valves Replacement: UGX 0
           p#grandServiceTotal
             strong Grand Service Total: UGX 0
-    
-    script(src="/js/tyre.js")
-    
-
+          p#cumulativeServiceTotal
+            strong Cumulative Services Total: #{formattedCumulativeTotal || 'UGX 0'}

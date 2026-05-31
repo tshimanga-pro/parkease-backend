@@ -1,0 +1,34 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Edit User
+    link(rel="stylesheet" href="/css/style2.css")
+  body
+    .container
+      h2 Edit User
+      if errorMessage
+        p(style="color: red;") #{errorMessage}
+      form(method="post" action="/admin/edit/" + (user && user._id))
+        .form-group
+          label(for="firstName") First Name
+          input#firstName(type="text" name="firstName" required value=(user && user.firstName))
+        .form-group
+          label(for="surname") Surname
+          input#surname(type="text" name="surname" required value=(user && user.surname))
+        .form-group
+          label(for="email") Email
+          input#email(type="email" name="email" required value=(user && user.email))
+        .form-group
+          label(for="telephone") Telephone
+          input#telephone(type="text" name="telephone" value=(user && user.telephone))
+        .form-group
+          label(for="role") Role
+          select#role(name="role" required)
+            option(value="Admin" selected=(user && user.role==="Admin")) Admin
+            option(value="Manager" selected=(user && user.role==="Manager")) Manager
+            option(value="Attendant" selected=(user && user.role==="Attendant")) Attendant
+        .form-actions
+          button.btn-submit(type="submit") Save Changes
+          a.btn(href="/admin" style="margin-left:1rem;") Cancel
