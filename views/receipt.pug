@@ -1,0 +1,80 @@
+doctype html
+html
+  head
+    title Parking Receipt
+    link(rel="stylesheet", href="/css/style2.css")
+  body.signOut-page
+    .nav-set
+      nav.navbar
+        .logo ParkEase
+        .nav-right
+          a.logout-btn(href="/signout") Back to Sign Out
+    .form-card
+      h2 Parking Receipt
+      .receipt-meta
+        p
+          strong Receipt Number:
+          |  #{receipt.receiptNumber}
+        p
+          strong Date:
+          |  #{receipt.date}
+      .receipt-details
+        .detail-row
+          span.label Driver Name
+          span.value #{receipt.driverName}
+        .detail-row
+          span.label Plate Number
+          span.value #{receipt.plateNumber}
+        .detail-row
+          span.label Vehicle Type
+          span.value #{receipt.vehicleType}
+        .detail-row
+          span.label Arrival Time
+          span.value #{receipt.arrivalTime}
+        .detail-row
+          span.label Sign-Out Time
+          span.value #{receipt.signoutTime}
+        .detail-row
+          span.label Duration
+          span.value #{receipt.duration}
+        .detail-row.total
+          span.label Amount Due
+          span.value UGX #{receipt.amountDue}
+      .receipt-actions
+        button.btn-submit(type="button", onclick="window.print()") Print Receipt
+        a.btn-submit(href="/signout") Back to Sign Out
+    style.
+      .receipt-meta {
+        margin-bottom: 18px;
+        line-height: 1.6;
+        color: #dbeafe;
+      }
+      .receipt-details {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+      .detail-row {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 10px;
+        background: rgba(15, 23, 42, 0.7);
+        padding: 14px 18px;
+        border-radius: 14px;
+        border: 1px solid rgba(226, 232, 240, 0.14);
+      }
+      .detail-row.total {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(56, 189, 248, 0.12));
+      }
+      .detail-row .label {
+        font-weight: 700;
+        color: #f8fafc;
+      }
+      .detail-row .value {
+        color: #e2e8f0;
+      }
+      .receipt-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }

@@ -84,7 +84,8 @@ router.post("/signout/confirm", async (req, res) => {
       gender: gender,
       ninNumber: ninNumber,
       signoutTime: currentTime,
-      fee: fee
+      amountPaid: fee,
+      receiptNumber: vehicle.receiptNumber,
     });
 
     const savedSignOut = await newSignOut.save();
@@ -110,7 +111,38 @@ router.get("/signout/receipt/:id", async (req, res) => {
       return res.redirect("/signout");
     }
 
-    res.render("receipt", { signout });
+    const arrivalTime = signout.vehicleId?.arrivalTime ? new Date(signout.vehicleId.arrivalTime) : null;
+    const signoutTime = signout.signoutTime ? new Date(signout.signoutTime) : new Date();
+    const amountDue = typeof signout.amountPaid === "number" && signout.amountPaid >= 0
+      ? signout.amountPaid
+      : calculateParkingFee(signout.vehicleId?.vehicleType, arrivalTime, signoutTime);
+    const durationMs = arrivalTime ? Math.max(0, signoutTime.getTime() - arrivalTime.getTime()) : 0;
+    const durationHours = Math.floor(durationMs / (1000 * 60 * 60));
+    const durationMinutes = Math.floor((durationMs / (1000 * 60)) % 60);
+    const formattedDuration = `${durationHours}h ${durationMinutes}m`;
+
+    const formatDateTime = (date) => date.toLocaleString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    res.render("receipt", {
+      signout,
+      receipt: {
+        receiptNumber: signout.receiptNumber || signout.vehicleId?.receiptNumber || "N/A",
+        date: formatDateTime(signoutTime),
+        driverName: signout.vehicleId?.driverName || "Unknown",
+        plateNumber: signout.vehicleId?.numberPlate || "Unknown",
+        vehicleType: signout.vehicleId?.vehicleType || "Unknown",
+        arrivalTime: arrivalTime ? formatDateTime(arrivalTime) : "Unknown",
+        signoutTime: formatDateTime(signoutTime),
+        duration: formattedDuration,
+        amountDue: amountDue.toLocaleString(),
+      },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).render("vehicleSignout", { error: "Unable to load receipt." });
