@@ -55,8 +55,8 @@ html(lang="en")
           input(type="hidden" id="valvesTotal" name="valvesTotal" value="0")
           input(type="hidden" id="servicesTotalInput" name="servicesTotal" value="0")
 
-          button.btn(type="button" id="calculateBtn") Calculate Charges
-          button.btn(type="submit" id="submitBtn" disabled) Submit Service
+          button.btn-calculate(type="button" id="calculateBtn") Calculate Charges
+          button.btn-submit(type="submit" id="submitBtn" disabled) Submit Service
         #result.result-section(style="display: none;")
           h3 Charge Summary
           p#tyrePrice Tyre Price: UGX 0
@@ -75,3 +75,4 @@ html(lang="en")
             strong Grand Service Total: UGX 0
           p#cumulativeServiceTotal
             strong Cumulative Services Total: #{formattedCumulativeTotal || 'UGX 0'}
+    script(src="/js/tyre.js")

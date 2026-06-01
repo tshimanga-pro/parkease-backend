@@ -29,13 +29,8 @@ html(lang="en")
           button#prevDay.date-selector__btn(
             type="button"
             aria-label="Previous day"
-          ) ◀
-          span.date-selector__label Mar 08, 2026
-          button#nextDay.date-selector__btn(
-            type="button"
-            aria-label="Next day"
-          ) ▶
-
+          ) 
+            span.date-selector__label #{displayDate}
       .metric-cards
         article.metric-card
           .metric-card__header

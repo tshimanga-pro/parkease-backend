@@ -38,10 +38,29 @@ router.get("/admin", async (req, res) => {
     const formattedBatteryServiceTotal = `UGX ${batteryServicesTotal.toLocaleString('en-UG')}`;
 
     const message = req.query.msg || null;
-    res.render("admin", { users, message, formattedTyreServiceTotal, formattedBatteryServiceTotal });
+    const currentDate = new Date();
+    const displayDate = currentDate.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+
+    res.render("admin", {
+      users,
+      message,
+      formattedTyreServiceTotal,
+      formattedBatteryServiceTotal,
+      displayDate,
+    });
   } catch (error) {
     console.error(error);
-    res.render("admin", { users: [], message: null, formattedTyreServiceTotal: 'UGX 0', formattedBatteryServiceTotal: 'UGX 0' });
+    res.render("admin", {
+      users: [],
+      message: null,
+      formattedTyreServiceTotal: 'UGX 0',
+      formattedBatteryServiceTotal: 'UGX 0',
+      displayDate: 'Unknown date',
+    });
   }
 });
 

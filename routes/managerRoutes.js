@@ -22,6 +22,22 @@ router.get("/manager", isManager, async (req, res) => {
     const batteryTransactionsTodayCount = await BatteryTransaction.countDocuments({
       transactionDate: { $gte: todayStart, $lte: todayEnd },
     });
+    const batteryTransactionsTodayTotals = await BatteryTransaction.aggregate([
+      {
+        $match: {
+          transactionDate: { $gte: todayStart, $lte: todayEnd },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalAmountPaid: { $sum: "$amountPaid" },
+        },
+      },
+    ]);
+    const batteryTransactionsTodayAmount = batteryTransactionsTodayTotals.length > 0 ? batteryTransactionsTodayTotals[0].totalAmountPaid : 0;
+    const formattedBatteryTransactionsTodayAmount = `UGX ${batteryTransactionsTodayAmount.toLocaleString('en-UG')}`;
+
     const tyreServicesTodayCount = await TyreTransaction.countDocuments({
       transactionDate: { $gte: todayStart, $lte: todayEnd },
     });
@@ -81,6 +97,7 @@ router.get("/manager", isManager, async (req, res) => {
       allBatteries: availableBatteries,
       totalBatteries,
       batteryTransactionsTodayCount,
+      formattedBatteryTransactionsTodayAmount,
       tyreServicesTodayCount,
       formattedTyreServiceTotal,
       recentActivities,

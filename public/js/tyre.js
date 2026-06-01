@@ -104,12 +104,14 @@ function handleCalculateCharges() {
     }
 }
 
-const calculateBtn = document.getElementById('calculateBtn');
-if (calculateBtn) {
-    calculateBtn.addEventListener('click', handleCalculateCharges);
-}
+window.addEventListener('DOMContentLoaded', () => {
+    const calculateBtn = document.getElementById('calculateBtn');
+    if (calculateBtn) {
+        calculateBtn.addEventListener('click', handleCalculateCharges);
+    }
 
-const submitBtn = document.getElementById('submitBtn');
-if (submitBtn) {
-    submitBtn.disabled = true;
-}
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+    }
+});
