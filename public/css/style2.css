@@ -760,6 +760,19 @@ input::placeholder {
   font-size: 0.95rem;
 }
 
+/* Custom Copy button styling */
+.btn-copy-custom {
+  border-color: #f97316 !important;
+  color: #f97316 !important;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-custom:hover {
+  background-color: #22c55e !important;
+  border-color: #22c55e !important;
+  color: #fff !important;
+}
+
 /* Responsive */
 @media (max-width: 650px) {
   .navbar {

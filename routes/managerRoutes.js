@@ -12,7 +12,8 @@ const TyreTransaction = require("../models/TyreTransaction");
 router.get("/manager", isManager, async (req, res) => {
   try {
     const availableBatteries = await BatteryRegistration.find({ status: "Available" }).sort({ dateAdded: -1 });
-    const totalBatteries = availableBatteries.length;
+    // cumulative count of available batteries (efficient DB count)
+    const totalBatteries = await BatteryRegistration.countDocuments({ status: "Available" });
 
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);

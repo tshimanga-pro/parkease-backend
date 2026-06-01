@@ -135,6 +135,7 @@ router.get("/signout/receipt/:id", async (req, res) => {
         receiptNumber: signout.receiptNumber || signout.vehicleId?.receiptNumber || "N/A",
         date: formatDateTime(signoutTime),
         driverName: signout.vehicleId?.driverName || "Unknown",
+        receiverName: signout.receiverName || "Unknown",
         plateNumber: signout.vehicleId?.numberPlate || "Unknown",
         vehicleType: signout.vehicleId?.vehicleType || "Unknown",
         arrivalTime: arrivalTime ? formatDateTime(arrivalTime) : "Unknown",

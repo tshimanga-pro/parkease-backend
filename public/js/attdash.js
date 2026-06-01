@@ -64,22 +64,28 @@
         const loginTime = user?.loginTime ? new Date(user.loginTime) : new Date();
         const hour = loginTime.getHours();
 
-        if (hour >= 7 && hour < 18) {
-          return { label: "Day Shift", range: "07:00 – 18:00" };
+        // Day shift: 06:00 - 18:00
+        if (hour >= 6 && hour < 18) {
+          return { label: "Day Shift", range: "06:00 – 18:00" };
         }
 
+        // Night shift: 19:00 - 06:00 (wraps midnight)
         if (hour >= 19 || hour < 6) {
           return { label: "Night Shift", range: "19:00 – 06:00" };
         }
 
+        // Transitional hour 18:00 - 19:00
         return { label: "Transition Shift", range: "18:00 – 19:00" };
       }
 
       function updateShiftInfo() {
         const shiftTimeEl = document.getElementById("shiftTime");
-        if (!shiftTimeEl) return;
+        const shiftEl = document.getElementById("shift");
+        if (!shiftTimeEl && !shiftEl) return;
         const shift = getCurrentShift();
-        shiftTimeEl.textContent = `${shift.label} (${shift.range})`;
+        const text = `${shift.label} (${shift.range})`;
+        if (shiftTimeEl) shiftTimeEl.textContent = text;
+        if (shiftEl) shiftEl.textContent = text;
       }
 
       function updateStats() {
